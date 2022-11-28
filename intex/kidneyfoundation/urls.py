@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from .views import indexPageView
 from .views import aboutPageView
 from .views import showUserPageView
 from .views import updateUserPageView
@@ -10,5 +10,5 @@ urlpatterns = [
     path("about/", aboutPageView, name="about"),
     path("updateUser/", updateUserPageView, name='updateUser'),
     path("addUser/", addUserPageView, name='addUser'),
-    path('', views.indexPageView, name='dashboard-index'),
+    path('', indexPageView, name='dashboard-index'),
 ]
