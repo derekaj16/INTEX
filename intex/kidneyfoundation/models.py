@@ -1,7 +1,5 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
+from datetime import datetime
 
 # Create your models here.
 class Comorbidity(models.Model) :
@@ -13,13 +11,31 @@ class Comorbidity(models.Model) :
     )
     name = models.CharField(max_length=50, choices=CONDITION)
 
+    class Meta :
+        db_table = 'comorbidity'
+
+    def __str__(self) :
+        return self.name
+
 class Food(models.Model) :
-    fcdId = models.IntegerField(primary_key=True)
+    fdcId = models.IntegerField(primary_key=True)
+
+    class Meta :
+        db_table = 'food'
+
+    def __str__(self) :
+        return self.fdcId
 
 class User(models.Model) :
     GENDER = (
         ('M', 'Male'),
         ('F', 'Female')
+    )
+    STAGE = (
+        (1, 1),
+        (2, 2),
+        (3, 3),
+        (4, 4)
     )
 
     email = models.EmailField(max_length=300, primary_key=True)
@@ -29,9 +45,27 @@ class User(models.Model) :
     height = models.PositiveSmallIntegerField()
     weight = models.DecimalField(max_digits=5, decimal_places=2)
     gender = models.CharField(max_length=1, choices=GENDER)
-    condition = models.ManyToManyField(Comorbidity)
+    on_dialysis = models.BooleanField(default=True)
+    stage = models.IntegerField(choices=STAGE)
+    date_signed_up = models.DateField(default=datetime.today)
+    user_condition = models.ManyToManyField(Comorbidity, through='Condition')
+    user_entry = models.ManyToManyField(Food, through='Entry')
 
-    entry = models.ManyToManyField(Food, through='Entry')
+    class Meta :
+        db_table = 'user'
+
+    def __str__(self) :
+        return self.first_name + ' ' + self.last_name
+
+class Condition(models.Model) :
+    email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, db_column='email')
+    comId = models.ForeignKey(Comorbidity, on_delete=models.SET_NULL, null=True, db_column='comId')
+
+    class Meta :
+        db_table = 'condition'
+
+    def __str__(self) :
+        return self.comId
 
 class Entry(models.Model) :
     MEAL_TYPE = (
@@ -40,8 +74,15 @@ class Entry(models.Model) :
         ('D', 'Dinner'),
         ('S', 'Snack')
     )
-    email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    fcdId = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, db_column='email')
+    fdcId = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True, db_column='fdcId')
     date = models.DateField()
     meal_type = models.CharField(max_length=1, choices=MEAL_TYPE)
     quantity = models.PositiveIntegerField()
+
+    class Meta :
+        db_table = 'entry'
+        unique_together = (('email', 'fdcId'))
+
+    def __str__(self) :
+        return self.date
