@@ -3,8 +3,11 @@ from django.http import HttpResponse
 from kidneyfoundation.models import User # need to make model for this
 
 # Create your views here.
-def indexPageView(request) :
-    return render(request, 'kidneyfoundation/index.html')
+def indexPageView(request):
+    context = {
+    }
+    return render(request, 'kidneyfoundation/index.html', context)
+
 
 def aboutPageView(request) :
     return render(request, 'kidneyfoundation/about.html')

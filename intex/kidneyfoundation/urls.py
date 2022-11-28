@@ -10,5 +10,5 @@ urlpatterns = [
     path("about/", aboutPageView, name="about"),
     path("updateUser/", updateUserPageView, name='updateUser'),
     path("addUser/", addUserPageView, name='addUser'),
-    path("", indexPageView, name="index"),
+    path('', indexPageView, name='dashboard-index'),
 ]
