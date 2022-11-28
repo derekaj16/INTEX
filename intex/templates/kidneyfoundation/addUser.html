@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class='container'>
+    <div class='text-left'>
+        <h2 class='section-heading text-uppercase'>Add a User</h2>
+    </div>
+    <br>
+    <form name='form' method='post' action="{% url 'addUser' %}">
+        {% csrf_token %}
+        <input type='hidden' id='user_id' name='user_id' value="{{ record.id }}">
+
+        <label for='first_name'>First Name: </label>
+        <input type='text' id='first_name' name='first_name'autofocus>
+        <br><br>
+
+        <label for='last_name'>Last Name: </label>
+        <input type='text' 
+        id='last_name' name='last_name'>
+        <br><br>
+
+        <label for='user_name'>User Name: </label>
+        <input type='text' id='user_name' name='user_name'>
+        <br><br>
+
+        <label for='password'>Password: </label>
+        <input type='text' id='password' name='password'>
+        <br><br>
+
+        <label for='email'>Email: </label>
+        <input type='text' id='email' name='email'>
+        <br><br>
+
+        <label for='phone'>Phone: </label>
+        <input type='text' id='phone' name='phone'>
+        <br><br>
+
+        <button type='submit'>Add</button>
+    </form>
+</div>
+{% endblock %}

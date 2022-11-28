@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1><b>User:</b></h1>
+<a class='btn btn-primary' href="{% url 'addUser' %}">New User</a>
+<br><br>
+<div class='container'>
+    <p>
+        <a class='btn btn-primary' href="{% url 'showUser' user_id=user.id %}">Edit</a>
+        {{ user.last_name }}, {{ user.first_name }}
+    </p>
+</div>
+{% endblock %}
