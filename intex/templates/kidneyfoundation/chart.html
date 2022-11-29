@@ -1,5 +1,5 @@
 {% extends 'partials/base1.html'%}
-{% comment %} {% liquid load crispy_forms_tags %} {% endcomment %}
+{% load crispy_forms_tags %}
 {% block title %} Dashboard {% endblock %}
 {% block content %}
 <div class = "row mt-3 pt-3">
@@ -10,7 +10,7 @@
             <hr>
             <form method="POST">{% comment %} The csrf_token is a secure and random token that is needed to secure the application and the submitting of the form. {% endcomment %}
                 {% csrf_token %}
-                {{ form}}
+                {{ form|crispy }}
                 <input class = 'btn btn-success btn-block' type='submit' value = 'Add'>
             </form>
     </div>

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'kidneyfoundation.apps.KidneyfoundationConfig',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -81,9 +82,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'kidneyfoundation',
         'USER': 'postgres',
-        'PASSWORD': '1El2Is5Us10!',
-        'HOST': 'localhost',
-        'PORT': 5433
+        'PASSWORD': 'password',
+        'HOST': 'localhost'
     }
 }
 
