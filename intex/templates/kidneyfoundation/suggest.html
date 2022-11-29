@@ -1,4 +1,6 @@
-{% extends 'partials/base.html' %} {% load static %} {% block content %}
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
 
 <section class="page-section" id="services">
   <div class="container">
@@ -32,6 +34,10 @@
       </div>
     </div>
   </div>
-</div>
 
+<form action="{% url 'search' %}" method="POST" style="margin-top: 400px;">
+    {% csrf_token %}
+    <input type="text" name="search" id="search" placeholder="Search a food">
+    <button type="submit">Search</button>
+</form>
 {% endblock %}
