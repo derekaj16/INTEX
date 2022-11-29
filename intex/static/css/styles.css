@@ -77,6 +77,15 @@
   }
 }
 
+/* Custom Styles */
+.dp-shdw {
+  box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, 1);
+  -webkit-box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, 1);
+}
+
+/* End Of Custom Styles */
+
 body {
   margin: 0;
   font-family: var(--bs-body-font-family);
@@ -12354,7 +12363,11 @@ p {
   #mainNav.navbar-shrink {
     padding-top: 1rem;
     padding-bottom: 1rem;
-    background-color: #212529;
+    background-color: #fff;
+    box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, .25);
+    -webkit-box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, .25);
+    -moz-box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, .25);
+    transition: .2s;
   }
 
   #mainNav.navbar-shrink .navbar-brand {
