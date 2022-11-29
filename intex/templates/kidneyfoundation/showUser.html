@@ -1,14 +1,21 @@
 {% extends 'partials/base.html' %}
 {% load static %}
 {% block content %}
-
-<h1><b>User:</b></h1>
-<a class='btn btn-primary' href="{% url 'addUser' %}">New User</a>
-<br><br>
+<br><br><br><br>
+<h1 style="padding-left:10px"><b>Nice to Have You.</b></h1>
 <div class='container'>
     <p>
-        <a class='btn btn-primary' href="{% url 'showUser' user_id=user.id %}">Edit</a>
-        {{ user.last_name }}, {{ user.first_name }}
+        <p><b>Email:</b> {{user.email}}</p>
+        <p><b>First Name:</b> {{user.first_name}}</p>
+        <p><b>Last Name:</b> {{user.last_name}}</p>
+        <p><b>Birthday:</b> {{user.birthday}}</p>
+        <p><b>Height:</b> {{user.height}}</p>
+        <p><b/>Weight:</b> {{user.weight}}</p>
+        <p><b>Gender:</b> {{user.gender}}</p>
+        <p><b>Date Signed Up:</b> {{user.date_signed_up}}</p>
+        <p><b>User on Dialysis?</b> {{user.on_dialysis}}</p>
+        <p><b>Stage:</b> {{user.stage}}</p>
+        <a class='btn btn-primary' href="{% url 'edit' email=user.email %}">Edit</a>
     </p>
 </div>
 {% endblock %}

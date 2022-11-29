@@ -9,7 +9,6 @@
     <br>
     <form name='form' method='post' action="{% url 'addUser' %}">
         {% csrf_token %}
-        <input type='hidden' id='user_id' name='user_id' value="{{ record.id }}">
 
         <label for='first_name'>First Name: </label>
         <input type='text' id='first_name' name='first_name'autofocus>
@@ -20,20 +19,46 @@
         id='last_name' name='last_name'>
         <br><br>
 
-        <label for='user_name'>User Name: </label>
-        <input type='text' id='user_name' name='user_name'>
-        <br><br>
-
-        <label for='password'>Password: </label>
-        <input type='text' id='password' name='password'>
-        <br><br>
-
         <label for='email'>Email: </label>
         <input type='text' id='email' name='email'>
         <br><br>
 
-        <label for='phone'>Phone: </label>
-        <input type='text' id='phone' name='phone'>
+        <label for='birthday'>Birthday: </label>
+        <input type='date' id='birthday' name='birthday'>
+        <br><br>
+
+        <label for='height'>Height: </label>
+        <input type='text' id='height' name='height'>
+        <br><br>
+
+        <label for='weight'>Weight(kg): </label>
+        <input type='text' id='weight' name='weight'>
+        <br><br>
+
+        <label for='gender'>Gender: </label>
+        <br>
+        <input type="radio" id="male" name="gender" value="M">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="F" checked>
+        <label for="female">Female</label><br>
+        <br><br>
+
+        <label for='date_signed_up'>Date Signed Up: </label>
+        <input type='date' id='date_signed_up' name='date_signed_up'>
+        <br><br>
+
+        <label for='on_dialysis'>Are You On Dialysis? </label>
+        <br>
+        <label for='yes'>Yes </label>
+        <input type='radio' id='yes' name='on_dialysis' value=True>
+        <br>
+        <label for='no'>No </label>
+        <input type='radio' id='no' name='on_dialysis' value=False>
+        <br><br>
+
+        
+        <label for='stage'>What Stage Are You? </label>
+        <input type='text' id='stage' name='stage'>
         <br><br>
 
         <button type='submit'>Add</button>
