@@ -12,6 +12,9 @@ def indexPageView(request):
 def aboutPageView(request) :
     return render(request, 'kidneyfoundation/about.html')
 
+def chartPageView(request) :
+    return render(request, 'kidneyfoundation/chart.html')
+
 def showUserPageView(request, user_id) :
     user = User.objects.get(id=user_id)
 
