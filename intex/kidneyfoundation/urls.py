@@ -1,11 +1,5 @@
 from django.urls import path
-from .views import indexPageView
-from .views import aboutPageView
-from .views import showUserPageView
-from .views import updateUserPageView
-from .views import addUserPageView
-from .views import chartPageView
-from .views import suggestPageView
+from .views import *
 
 urlpatterns = [
     path("user/<int:user_id>", showUserPageView, name="user"),
@@ -14,5 +8,6 @@ urlpatterns = [
     path("suggest/", suggestPageView, name='suggest'),
     path("updateUser/", updateUserPageView, name='updateUser'),
     path("addUser/", addUserPageView, name='addUser'),
+    path('search', searchFoodView, name='search'),
     path('', indexPageView, name='dashboard-index'),
 ]

@@ -10,7 +10,7 @@
             <hr>
             <form method="POST">{% comment %} The csrf_token is a secure and random token that is needed to secure the application and the submitting of the form. {% endcomment %}
                 {% csrf_token %}
-                {{ form|crispy }}
+                {{ form | crispy }}
                 <input class = 'btn btn-success btn-block' type='submit' value = 'Add'>
             </form>
     </div>
