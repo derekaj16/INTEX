@@ -19,7 +19,7 @@ class Comorbidity(models.Model) :
 
 class Food(models.Model) :
     fdcId = models.IntegerField(primary_key=True)
-    
+
 
 
     class Meta :
@@ -52,6 +52,7 @@ class User(models.Model) :
     date_signed_up = models.DateField(default=datetime.today)
     user_condition = models.ManyToManyField(Comorbidity, through='Condition')
     user_entry = models.ManyToManyField(Food, through='Entry')
+    
 
     class Meta :
         db_table = 'user'

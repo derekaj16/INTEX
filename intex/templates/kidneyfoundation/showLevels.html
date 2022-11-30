@@ -1,0 +1,18 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block content %}
+<br><br><br><br>
+<h1 style="padding-left:10px"><b>Nice to Have You.</b></h1>
+<div class='container'>
+    <p>
+        <p><b>K Level:</b> {{user.k_level}}</p>
+        <p><b>Na Level:</b> {{user.na_level}}</p>
+        <p><b>Phos Level:</b> {{user.phos_level}}</p>
+        <p><b>Creatanine Level:</b> {{user.creatinine_level}}</p>
+        <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
+        <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
+
+        <a class='btn btn-primary' href="{% url 'editLevels' email=user.email %}">Update Levels</a>
+    </p>
+</div>
+{% endblock %}

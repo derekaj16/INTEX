@@ -15,7 +15,7 @@
         <p><b>Date Signed Up:</b> {{user.date_signed_up}}</p>
         <p><b>User on Dialysis?</b> {{user.on_dialysis}}</p>
         <p><b>Stage:</b> {{user.stage}}</p>
-        <a class='btn btn-primary' href="{% url 'edit' email=user.email %}">Edit</a>
+        <a class='btn btn-primary' href="{% url 'edit' email=user.email %}">Edit Account Details</a>
     </p>
 </div>
 {% endblock %}

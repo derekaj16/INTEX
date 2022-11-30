@@ -121,10 +121,10 @@ def addUserPageView(request) :
         user.save()
 
         # creates a django user???
-        myuser = User.objects.create_user(username, email, password)
+        # myuser = User.objects.create_user(username, email, password)
 
         # creates a django user???
-        myuser.save()
+        # myuser.save()
 
         return showUserPageView(request, user.email)
     else: 

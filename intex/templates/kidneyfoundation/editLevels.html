@@ -1,4 +1,6 @@
-{% extends 'partials/base.html' %} {% load static %} {% block content %}
+{% extends 'partials/base.html' %} 
+{% load static %}
+{% block content %}
 
 <div class="container">
   <div class="text-left">
@@ -8,7 +10,7 @@
     </h2>
   </div>
   <br />
-  <form name="form" method="post" action="{% url 'updateUser' %}">
+  <form name="form" method="post" action="{% url 'updateLevels' %}">
     {% csrf_token %}
     <label for="first_name">First Name: </label>
     <input
