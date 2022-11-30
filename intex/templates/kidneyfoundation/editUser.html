@@ -28,10 +28,15 @@
       value="{{ user.last_name }}"
     />
     <br /><br />
-
-    <label for="email">Email: </label>
-    <input type="text" id="email" name="email" value="{{ user.email }}" />
-    <br /><br />
+  <label for="email">Email: </label>
+  <input
+    type="text"
+    id="email"
+    name="email"
+    value="{{ user.email }}"
+    readonly
+  />
+  <br /><br />
 
     <p>
       Current Birthday = {{ user.birthday }} <br />
@@ -58,11 +63,11 @@
 
       <label for="date_signed_up"></label>
       <input
-        type="hidden"
         type='date'
         id="date_signed_up"
         name="date_signed_up"
         <value="{{ user.date_signed_up }}" 
+        hidden
       />
     </p>
 
