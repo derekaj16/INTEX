@@ -6,87 +6,37 @@
   <div class="text-left">
     <br /><br /><br /><br />
     <h2 style="style:padding-left:10px;" class="section-heading text-uppercase">
-      Edit Your Information:
+      Edit Your Serem Levels:
     </h2>
   </div>
   <br />
   <form name="form" method="post" action="{% url 'updateLevels' %}">
     {% csrf_token %}
-    <label for="first_name">First Name: </label>
-    <input
-      type="text"
-      id="first_name"
-      name="first_name"
-      value="{{ user.first_name }}"
-      autofocus
-    />
+
+    <label for = "k_level">K Level:</label>
+    <input type="text" id="k_level" name="k_level" value="{{user.k_level}}" />
     <br /><br />
 
-    <label for="last_name">Last Name: </label>
-    <input
-      type="text"
-      id="last_name"
-      name="last_name"
-      value="{{ user.last_name }}"
-    />
-    <br /><br />
-  <label for="email">Email: </label>
-  <input
-    type="text"
-    id="email"
-    name="email"
-    value="{{ user.email }}"
-    readonly
-  />
-  <br /><br />
-
-    
-      Current Birthday: {{ user.birthday|date:"d-m-Y"}} <br />
-      <label for="birthday">Birthday: </label>
-      <input type="date" id="birthday" name="birthday" value="{{ user.birthday|date:"Y-m-d"}}"/>
-      <br /><br />
-
-      <label for="height">Height(cm): </label>
-      <input type="text" id="height" name="height" value="{{ user.height }}" />
-      <br /><br />
-
-      <label for="weight">Weight(kg): </label>
-      <input type="text" id="weight" name="weight" value="{{ user.weight }}" />
-      <br /><br />
-
-      <label for="gender">Gender: </label>
-      <br />
-      <input type="radio" id="male" name="gender" {% if user.gender == 'M'%}checked{% endif %} value="M"  />
-      <label for="male">Male</label><br />
-      <input type="radio" id="female" name="gender" {% if user.gender == 'F'%}checked{% endif %} value="F" />
-      <label for="female">Female</label>
-      <br />
-      
-
-      <label for="date_signed_up"></label>
-      <input
-        type='date'
-        id="date_signed_up"
-        name="date_signed_up"
-        <value="{{ user.date_signed_up }}" 
-        hidden
-      />
-    
-
-    <p>Date Signed up: <br />{{ user.date_signed_up }}</p>
-
-    <label for="on_dialysis">Are You On Dialysis? </label>
-    <br />
-    <label for="yes">Yes </label>
-    <input type="radio" id="yes" name="on_dialysis" {% if user.on_dialysis == True %}checked{% endif %} value="True" />
-    <br />
-    <label for="no">No </label>
-    <input type="radio" id="no" name="on_dialysis" {% if user.on_dialysis == False %}checked{% endif %} value="False" />
+    <label for = "na_level">Na Level: </lavel>
+    <input type="text" id="na_level" name="na_level" value="{{user.na_level}}" />
     <br /><br />
 
-    <label for="stage">What Stage Are You? </label>
-    <input type="text" id="stage" name="stage" value="{{ user.stage }}" />
+    <label for = "phos_level">Phos Level: </label>
+    <input type="text" id="phos_level" name="phos_level" value="{{user.phos_level}}" />
     <br /><br />
+
+    <label for = "creatinine_level">Creatinine Level: </label>
+    <input type="text" id="creatinine_level" name="creatinine_level" value="{{user.creatinine_level}}" />
+    <br /><br />
+
+    <label for = "albumin_level">Albumin Level: </label>
+    <input type="text" id="albumin_level" name="albumin_level" value="{{user.albumin_level}}" />
+    <br /><br />
+
+    <label for = "blood_sugar_level">Blood Sugar Level: </label>
+    <input type="text" id="blood_sugar_level" name="blood_sugar_level" value="{{user.blood_sugar_level}}" />
+    <br /><br />
+
 
     <button type="submit">Update</button>
   </form>
