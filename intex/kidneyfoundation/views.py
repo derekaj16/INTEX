@@ -112,6 +112,12 @@ def addUserPageView(request) :
         user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]
         user.stage = request.POST[ 'stage' ]
+        user.k_level = request.POST[ 'k_level' ]
+        user.na_level = request.POST[ 'na_level' ]
+        user.phos_level = request.POST[ 'phos_level' ]
+        user.creatinine_level = request.POST[ 'creatinine_level' ]
+        user.albumin_level = request.POST[ 'albumin_level' ]
+        user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
 
         
         # if User.objects.filter(email=email) :
@@ -121,10 +127,10 @@ def addUserPageView(request) :
         user.save()
 
         # creates a django user???
-        myuser = User.objects.create_user(username, email, password)
+        # myuser = User.objects.create_user(username, email, password)
 
         # creates a django user???
-        myuser.save()
+        # myuser.save()
 
         return showUserPageView(request, user.email)
     else: 
