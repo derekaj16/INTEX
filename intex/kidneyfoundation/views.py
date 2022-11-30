@@ -54,8 +54,8 @@ def searchFoodView(request) :
         else :
             return suggestPageView(request, 'Your search for ' + request.POST['search'] + ' was not found :/')
 
-def showUserPageView(request, user_id) :
-    user = User.objects.get(id=user_id)
+def showUserPageView(request, email) :
+    user = User.objects.get(email=email)
 
     context = {
         "user": user
@@ -63,37 +63,56 @@ def showUserPageView(request, user_id) :
 
     return render(request, 'kidneyfoundation/showUser.html', context)
 
-def updateUserPageView(request) :
+
+
+def editUserPageView(request, email):
+    data = User.objects.get(email=email)
+    
+    context = {
+        "user" : data
+    }
+
+    return render(request, 'kidneyfoundation/editUser.html', context)
+
+def updateUserInfoView(request) :
     if request.method == 'POST' :
-        user_id = request.POST[ 'user_id' ]
+        email = request.POST[ 'email' ]
 
-        user = User.objects.get(id=user_id)
+        user = User.objects.get(email=email)
 
+        user.email = request.POST[ 'email' ]
         user.first_name = request.POST[ 'last_name' ]
         user.last_name = request.POST[ 'first_name' ]
-        user.user_name = request.POST[ 'user_name' ]
-        user.password = request.POST[ 'password' ]
-        user.email = request.POST[ 'email' ]
-        user.phone = request.POST[ 'phone' ]
+        user.birthday = request.POST[ 'birthday' ]
+        user.height = request.POST[ 'height' ]
+        user.weight = request.POST[ 'weight' ]
+        user.gender = request.POST[ 'gender' ]
+        user.date_signed_up = request.POST[ 'date_signed_up' ]
+        user.on_dialysis = request.POST[ 'on_dialysis' ]
+        user.stage = request.POST[ 'stage' ]
         
         user.save()
 
-    return showUserPageView(request)
+    return showUserPageView(request, user.email)
 
 def addUserPageView(request) :
     if request.method == 'POST' :
         user = User()
 
+        user.email = request.POST[ 'email' ]
         user.first_name = request.POST[ 'last_name' ]
         user.last_name = request.POST[ 'first_name' ]
-        user.user_name = request.POST[ 'user_name' ]
-        user.password = request.POST[ 'password' ]
-        user.email = request.POST[ 'email' ]
-        user.phone = request.POST[ 'phone' ]
+        user.birthday = request.POST[ 'birthday' ]
+        user.height = request.POST[ 'height' ]
+        user.weight = request.POST[ 'weight' ]
+        user.gender = request.POST[ 'gender' ]
+        user.date_signed_up = request.POST[ 'date_signed_up' ]
+        user.on_dialysis = request.POST[ 'on_dialysis' ]
+        user.stage = request.POST[ 'stage' ]
         
         user.save()
 
-        return showUserPageView(request)
+        return showUserPageView(request, user.email)
     else: 
         return render (request, 'kidneyfoundation/addUser.html')
 
