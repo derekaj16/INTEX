@@ -9,11 +9,13 @@
         <title>Home Page</title>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        {% block additionalJS %}{% endblock additionalJS %}
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        {% block additionalCSS %}{% endblock additionalCSS %}
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -29,6 +31,7 @@
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'dashboard-index' %}"><b>Home</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'suggest' %}"><b>Dietary Advice</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'chart' %}"><b>Dashboard</b></a></li>
+                        <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'diary' %}"><b>Diary</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'showLevels' email='davemurdock55@gmail.com' %}"><b>Serum Levels</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'addUser'%}"><b>Account</b></a></li>
                     </ul>

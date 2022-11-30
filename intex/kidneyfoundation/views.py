@@ -4,7 +4,7 @@ import requests
 import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from kidneyfoundation.models import User # need to make model for this
+from kidneyfoundation.models import * # need to make model for this
 from datetime import datetime
 
 # Create your views here.
@@ -47,15 +47,26 @@ def suggestPageView(request, data=None) :
     }
     return render(request, 'kidneyfoundation/suggest.html', context)
 
-def searchFoodView(request) :
+def diaryPageView(request, data=None, status=0) :
+    breakfast = 'hello'
+
+    context = {
+        'foods' : data,
+        'status' : status,
+        'nutrientIds' : [1093, 1003, 1092, 1091],
+        'breakfast': breakfast
+    }
+    return render(request, 'kidneyfoundation/diary.html', context)
+
+def findFood(request) :
     if request.method == 'POST' :
-        r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&pageSize=2&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
-    if r.status_code == 200 :
-        json_data = json.loads(r.content)
-        if len(json_data['foods']) > 0 :
-            return suggestPageView(request, json_data['foods'])
-        else :
-            return suggestPageView(request, 'Your search for ' + request.POST['search'] + ' was not found :/')
+        r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
+        if r.status_code == 200 :
+            json_data = json.loads(r.content)
+            return diaryPageView(request, json_data['foods'], r.status_code)
+
+def addFoodView(request) :
+    return diaryPageView(request)
 
 def showUserPageView(request, email) :
     data = User.objects.get(email=email)
@@ -106,8 +117,8 @@ def addUserPageView(request) :
         user.first_name = request.POST[ 'last_name' ]
         user.last_name = request.POST[ 'first_name' ]
         user.birthday = request.POST[ 'birthday' ]
-        user.height = request.POST[ 'height' ]
-        user.weight = request.POST[ 'weight' ]
+        user.height = heightToCm(request.POST[ 'feet' ], request.POST['inches'])
+        user.weight = lbsToKg(request.POST[ 'weight' ])
         user.gender = request.POST[ 'gender' ]
         user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]
@@ -177,3 +188,13 @@ def updateLevelsView(request) :
         user.save()
 
     return showLevelsPageView(request, user.email)
+
+
+# CONVERSION FUNCTIONS
+def heightToCm(feet, inches) :
+    cm = ((float(feet) * 12) + float(inches)) * 2.54
+    return round(cm, 2)
+
+def lbsToKg(lbs) :
+    kg = float(lbs) * 0.453592
+    return round(kg, 2)

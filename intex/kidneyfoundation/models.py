@@ -19,7 +19,11 @@ class Comorbidity(models.Model) :
 
 class Food(models.Model) :
     fdcId = models.IntegerField(primary_key=True)
-
+    name = models.CharField(max_length=100)
+    k = models.DecimalField(max_digits=8, decimal_places=3)
+    na = models.DecimalField(max_digits=8, decimal_places=3)
+    phos = models.DecimalField(max_digits=8, decimal_places=3)
+    protein = models.DecimalField(max_digits=8, decimal_places=3)
 
 
     class Meta :
@@ -44,8 +48,8 @@ class User(models.Model) :
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     birthday = models.DateField()
-    height = models.PositiveSmallIntegerField()
-    weight = models.DecimalField(max_digits=5, decimal_places=2)
+    height = models.FloatField()
+    weight = models.FloatField()
     gender = models.CharField(max_length=1, choices=GENDER)
     on_dialysis = models.BooleanField(default=True)
     stage = models.IntegerField(choices=STAGE)
