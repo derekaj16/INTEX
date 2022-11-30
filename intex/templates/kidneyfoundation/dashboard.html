@@ -7,31 +7,30 @@
 <div class="container" style="padding: 100px 0px 0px 10px">
     <div class="row">
         <div class="col-md-12">
-            <h1>Visualizations</h1>
+            <h1>Health Status</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-4">
-            <h2>Today's Intake</h2>
-            <canvas id="myChart" width="200" height="200"></canvas>
+            <h2>Today's Intake Levels</h2>
+            <canvas id="myChart" width="200" height="300"></canvas>
             {% include 'partials/chart1script.html' %}
+            
+            <h3>Alerts</h3>
         </div>
+        
+        <div class="col-md-8">
+            <h2>Weekly Average Levels</h2>
+            <canvas id="myChart2" width="200" height="120"></canvas>
+            {% include 'partials/chart2script.html' %}
+
+            <h3>Alerts</h3>
+        </div>
+        
     </div>
-    {% comment %} <div class="row">
-        <div class="col-md-12">
-            <h2>Weekly Average</h2>
-            <canvas id="myChart2" width="400" height="400"></canvas>
-            {% block chart2Script %}
-            <p>Just a test to see if it works again...</p>
-        </div>
-    </div> {% endcomment %}
+    <div class="row">
+        
+    </div>
+    
 </div>
-
-<div class="container" style="padding: 100px 0px 0px 10px">
-    <h3>Alerts</h3>
-
-
-
-</div>
-
 {% endblock %}
