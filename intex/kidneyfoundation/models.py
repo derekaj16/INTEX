@@ -19,7 +19,7 @@ class Comorbidity(models.Model) :
 
 class Food(models.Model) :
     fdcId = models.IntegerField(primary_key=True)
-    
+
 
 
     class Meta :
