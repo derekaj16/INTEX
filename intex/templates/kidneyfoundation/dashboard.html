@@ -1,0 +1,41 @@
+{% extends 'partials/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+{% block content %}
+<canvas id="myChart2" width="400" height="400"></canvas>
+
+<div class="container" style="padding: 100px 0px 0px 10px">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Visualizations</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Today's Intake</h2>
+            <canvas id="myChart" width="400" height="400"></canvas>
+            {% block chart1Script %}{% endblock %}
+            <p>Just a test to see if it works</p>
+        </div>
+    </div>
+    {% comment %} <div class="row">
+        <div class="col-md-12">
+            <h2>Weekly Average</h2>
+            <canvas id="myChart2" width="400" height="400"></canvas>
+            {% block chart2Script %}
+            <p>Just a test to see if it works again...</p>
+        </div>
+    </div> {% endcomment %}
+</div>
+
+<div class="container" style="padding: 100px 0px 0px 10px">
+    <h3>Alerts</h3>
+
+
+
+</div>
+
+{% endblock %}

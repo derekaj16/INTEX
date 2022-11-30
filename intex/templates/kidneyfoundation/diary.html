@@ -1,0 +1,125 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block additionalCSS %}
+<link rel="newest stylesheet" href="{% static 'css/main.css' %}">
+{% endblock additionalCSS %}
+
+{% block additionalJS %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock additionalJS %}
+
+{% block content %}
+<div id="overlay">
+    <div id="text">
+        <form action="{% url 'add' %}" method="POST" class="popup-form">
+            {% csrf_token %}
+            <b><p id="food-name"></p></b>
+              
+            <div class="servings-div">
+                <div>
+                    <p style="margin: 0 10px 0 0;"> Servings: </p>
+                    <input type="number" name="servingSize" id="servings"required value="1" step="0.5">
+                </div>
+                <div class="info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    <span class="tooltiptext">
+                        Serving Size: <span id="serving-size"></span>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <select class="form-select" name="meal" id="meal">
+                    <option value="B">Breakfast</option>
+                    <option value="L">Lunch</option>
+                    <option value="D">Dinner</option>
+                    <option value="S">Snack</option>
+                </select>
+            </div>
+            <div class="buttons">
+                <a class="btn btn-light" id="cancel" onclick="hidePopUp()">Cancel</a>
+                <button class="btn btn-success" type="submit">Add</button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<section class="page-section" id="services">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">My Food Diary</h2>
+            <h3 class="section-subheading text-muted">What have you eaten today?</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div>
+                    <h2>November 28, 2022</h2>
+                    
+                    <h4>Breakfast</h4>
+                    {% for food in breakfast %}
+                    <p>{{ food }}</p>
+                    {% endfor %}
+
+                    <h4>Lunch</h4>
+                    {% for food in lunch %}
+                    <p>{{ food }}</p>
+                    {% endfor %}
+
+                    <h4>Dinner</h4>
+                    {% for food in dinner %}
+                    <p>{{ food }}</p>
+                    {% endfor %}
+
+                    <h4>Snack</h4>
+                    {% for food in snack %}
+                    <p>{{ food }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-12 mx-auto">
+                        <form class="searchbar" action="{% url 'find' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="text" id="search" name="search" placeholder="Add a food">
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if foods %}
+                        <h4 class="text-center">Results</h4>
+                        {% for food in foods %}
+                        <div class="search-item" onclick="addToList({{ food }})" >
+                            <div class="item">
+                                <div>
+                                    {{ food.description | title }}<br>
+                                    <span class="subtext">{{ food.foodCategory }}</span>
+                                </div>
+                                <div class="add-btn" id="{{ food.fdcId }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        {% if not forloop.last %}
+                        <div class="divider"></div>
+                        {% endif %}
+                        {% endfor %}
+                        {% elif status == 200 %}
+                            <div class="divider"></div>
+                            <h4 class="text-center">Sorry :/ No results were found</h4>
+                            <div class="divider"></div>
+                        {% endif %}   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -4,8 +4,18 @@ import requests
 import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
-from kidneyfoundation.models import User # need to make model for this
+from kidneyfoundation.models import * # need to make model for this
 from datetime import datetime
+
+# feet/inches to centimeters Function
+def heightToCm(feet, inches) :
+    cm = ((float(feet) * 12) + float(inches)) * 2.54
+    return round(cm, 2)
+
+# Pounds to Kilograms Function
+def lbsToKg(lbs) :
+    kg = float(lbs) * 0.453592
+    return round(kg, 2)
 
 # Create your views here.
 def indexPageView(request, error=False) :
@@ -17,10 +27,6 @@ def indexPageView(request, error=False) :
     return render(request, 'kidneyfoundation/index.html', context)
 
 
-def signupPageView(request) :
-    return render(request, 'kidneyfoundation/signup.html')
-
-
 def addUserPageView(request) :
     if request.method == 'POST' :
         user = User()
@@ -30,8 +36,8 @@ def addUserPageView(request) :
         user.first_name = request.POST[ 'first_name' ]
         user.last_name = request.POST[ 'last_name' ]
         user.birthday = request.POST[ 'birthday' ]
-        user.height = request.POST[ 'height' ]
-        user.weight = request.POST[ 'weight' ]
+        user.height = heightToCm(request.POST[ 'feet' ], request.POST['inches'])
+        user.weight = lbsToKg(request.POST[ 'weight' ])
         user.gender = request.POST[ 'gender' ]
         user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]
@@ -44,11 +50,6 @@ def addUserPageView(request) :
         user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
         
         user.save()
-
-        # creates a django user???
-        # myuser = User.objects.create_user(username, email, password)
-        # creates a django user???
-        # myuser.save()
 
         return indexPageView(request)
     else: 
@@ -133,14 +134,14 @@ def aboutPageView(request) :
     return render(request, 'kidneyfoundation/about.html', context)
 
 
-def chartPageView(request) :
+def dashboardPageView(request) :
     email = request.session['email']
     data = User.objects.get(email=email)
 
     context = {
         "user" : data
     }
-    return render(request, 'kidneyfoundation/chart.html', context)
+    return render(request, 'kidneyfoundation/dashboard.html', context)
 
 
 def chart2PageView(request) :
@@ -156,23 +157,26 @@ def suggestPageView(request, data=None) :
     return render(request, 'kidneyfoundation/suggest.html', context)
 
 
-def searchFoodView(request) :
-    email = request.session['email']
-    data = User.objects.get(email=email)
+def diaryPageView(request, data=None, status=0) :
+    breakfast = 'hello'
 
     context = {
-        "user" : data
+        'foods' : data,
+        'status' : status,
+        'nutrientIds' : [1093, 1003, 1092, 1091],
+        'breakfast': breakfast
     }
+    return render(request, 'kidneyfoundation/diary.html', context)
 
+def findFood(request) :
     if request.method == 'POST' :
-        r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&pageSize=2&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
-    if r.status_code == 200 :
-        json_data = json.loads(r.content)
-        if len(json_data['foods']) > 0 :
-            return suggestPageView(request, json_data['foods'], context)
-        else :
-            return suggestPageView(request, 'Your search for ' + request.POST['search'] + ' was not found :/', context)
+        r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
+        if r.status_code == 200 :
+            json_data = json.loads(r.content)
+            return diaryPageView(request, json_data['foods'], r.status_code)
 
+def addFoodView(request) :
+    return diaryPageView(request)
 
 def showUserPageView(request) :
     email = request.session['email']
@@ -223,13 +227,7 @@ def updateUserInfoView(request) :
         
         user.save()
 
-
-
     return showUserPageView(request)
-
-
-
-
 
 def showLevelsPageView(request) :
     email = request.session['email']
@@ -276,5 +274,6 @@ def updateLevelsView(request) :
         user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
         
         user.save()
+
     
     return showLevelsPageView(request)
