@@ -143,6 +143,9 @@ def chartPageView(request) :
     return render(request, 'kidneyfoundation/chart.html', context)
 
 
+def chart2PageView(request) :
+    return render(request, 'kidneyfoundation/chart2.html')
+
 def suggestPageView(request, data=None) :
     email = request.session['email']
     data = User.objects.get(email=email)

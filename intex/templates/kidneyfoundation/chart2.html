@@ -1,0 +1,100 @@
+{% extends 'partials/base.html'%} 
+{% load crispy_forms_tags %} 
+{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>{% endblock %}
+
+{% block title %} Dashboard {%endblock%}
+
+{% block script1 %}
+
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['K', 'Na', 'Phos'],
+            datasets: [
+            {
+                label: 'Today',
+                data: [12, 19, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}
+
+{% block script2 %}
+
+<script>
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data:
+        {
+            labels: ['K', 'Na', 'Phos'],
+            datasets: [{
+                label: 'Weekly Average',
+                data: [12, 19, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 100px 0px 0px 10px">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Visualizations</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Today's Intake</h2>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Weekly Average</h2>
+            <canvas id="myChart2" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
