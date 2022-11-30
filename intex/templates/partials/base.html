@@ -1,7 +1,10 @@
 {% load static %}
 <!DOCTYPE html>
+
+
 <html lang="en">
   <head>
+    
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,7 +12,10 @@
     />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Home Page</title>
+    {% block script %}{% endblock %}
+    {% block script1 %}{% endblock %}
+    {% block script2 %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
     <!-- Font Awesome icons (free version)-->
     <script
       src="https://use.fontawesome.com/releases/v6.1.0/js/all.js"

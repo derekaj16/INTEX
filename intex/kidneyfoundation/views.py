@@ -41,6 +41,9 @@ def aboutPageView(request) :
 def chartPageView(request) :
     return render(request, 'kidneyfoundation/chart.html')
 
+def chart2PageView(request) :
+    return render(request, 'kidneyfoundation/chart2.html')
+
 def suggestPageView(request, data=None) :
     context = {
         'data': data
