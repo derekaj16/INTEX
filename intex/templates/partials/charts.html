@@ -1,13 +1,8 @@
-{% extends 'partials/base.html'%}
-{% load crispy_forms_tags %}
-
-
-
 {% block chart1Script %}
 <canvas id="myChart2" width="200" height="200"></canvas>
 <script>
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['K', 'Na', 'Phos'],
@@ -38,6 +33,7 @@
     });
 </script>
 {% endblock %}
+
 
 
 {% block chart2Script %}
@@ -75,40 +71,3 @@
 </script>
 {% endblock %}
 
-
-{% block title %}Dashboard{% endblock %}
-
-
-{% block content %}
-<canvas id="myChart2" width="400" height="400"></canvas>
-
-<div class="container" style="padding: 100px 0px 0px 10px">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Visualizations</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Today's Intake</h2>
-            <canvas id="myChart" width="400" height="400"></canvas>
-            <p>Just a test to see if it works</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <h2>Weekly Average</h2>
-            <canvas id="myChart2" width="400" height="400"></canvas>
-            <p>Just a test to see if it works again...</p>
-        </div>
-    </div>
-</div>
-
-<div class="container" style="padding: 100px 0px 0px 10px">
-    <h3>Alerts</h3>
-
-
-
-</div>
-
-{% endblock %}

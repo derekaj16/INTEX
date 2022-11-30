@@ -20,9 +20,6 @@
 
         <!-- Chartjs CDN --> 
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
-        {% block chart1Script %}{% endblock %}
-        {% block chart2Script %}{% endblock %}
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -37,7 +34,7 @@
                     <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'home' %}"><b>Home</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'suggest' %}"><b>Dietary Advice</b></a></li>
-                        <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'chart' %}"><b>Dashboard</b></a></li>
+                        <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'dashboard' %}"><b>Dashboard</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'showLevels' %}"><b>Serum Levels</b></a></li>
                         <li class="nav-item"><a class="nav-link" style="color:black" href="{% url 'showUser' %}"><b>Account</b></a></li>
                     </ul>

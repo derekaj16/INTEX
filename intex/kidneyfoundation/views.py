@@ -27,10 +27,6 @@ def indexPageView(request, error=False) :
     return render(request, 'kidneyfoundation/index.html', context)
 
 
-def signupPageView(request) :
-    return render(request, 'kidneyfoundation/signup.html')
-
-
 def addUserPageView(request) :
     if request.method == 'POST' :
         user = User()
@@ -54,11 +50,6 @@ def addUserPageView(request) :
         user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
         
         user.save()
-
-        # creates a django user???
-        # myuser = User.objects.create_user(username, email, password)
-        # creates a django user???
-        # myuser.save()
 
         return indexPageView(request)
     else: 
@@ -143,14 +134,14 @@ def aboutPageView(request) :
     return render(request, 'kidneyfoundation/about.html', context)
 
 
-def chartPageView(request) :
+def dashboardPageView(request) :
     email = request.session['email']
     data = User.objects.get(email=email)
 
     context = {
         "user" : data
     }
-    return render(request, 'kidneyfoundation/chart.html', context)
+    return render(request, 'kidneyfoundation/dashboard.html', context)
 
 
 def chart2PageView(request) :
