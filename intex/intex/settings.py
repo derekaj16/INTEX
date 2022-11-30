@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'kidneyfoundation.apps.KidneyfoundationConfig',
-    'users.apps.UsersConfig',
     'crispy_forms',
 
 ]
@@ -86,8 +85,6 @@ DATABASES = {
         'NAME': 'kidneyfoundation',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
-        'HOST': 'localhost',
-        'PASSWORD': '1El2Is5Us10!',
         'HOST': 'localhost',
         'PORT': 5433
     }
