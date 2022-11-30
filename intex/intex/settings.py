@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'kidneyfoundation.apps.KidneyfoundationConfig',
-    'users.apps.UsersConfig',
     'crispy_forms',
 
 ]
