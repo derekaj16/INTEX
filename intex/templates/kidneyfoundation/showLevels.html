@@ -1,5 +1,7 @@
 {% extends 'partials/base.html' %}
 {% load static %}
+{% block title %}Serum Levels{% endblock %}
+
 {% block content %}
 <br><br><br><br>
 
@@ -13,8 +15,9 @@
         <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
         <p><b>Blood Sugar Level:</b> {{user.blood_sugar_level}}</p>
 
-        {% comment %} May need to add {{user.email}} somewhere{% endcomment %}
-        <a class='btn btn-primary' href="{% url 'editLevels' email=user.email %}">Update Levels</a>
+        <a class='btn btn-primary' href="{% url 'editLevels' %}">Update Levels</a>
+
+        {% comment %} <a class='btn btn-primary' href="{% url 'home' email=user.email %}">Test Home Page Param</a> {% endcomment %}
     </p>
 </div>
 {% endblock %}
