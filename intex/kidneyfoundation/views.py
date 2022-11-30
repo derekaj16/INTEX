@@ -66,7 +66,7 @@ def updateUserInfoView(request) :
         user.height = request.POST[ 'height' ]
         user.weight = request.POST[ 'weight' ]
         user.gender = request.POST[ 'gender' ]
-        user.date_signed_up = request.POST[ 'date_signed_up' ]
+        # user.date_signed_up = request.POST[ 'date_signed_up' ]
         user.on_dialysis = request.POST[ 'on_dialysis' ]
         user.stage = request.POST[ 'stage' ]
         

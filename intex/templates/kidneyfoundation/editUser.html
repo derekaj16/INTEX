@@ -36,7 +36,8 @@
     <p>
       Current Birthday = {{ user.birthday }} <br />
       <label for="birthday">Birthday: </label>
-      <input type="date" id="birthday" name="birthday" />
+      <input type="date" id="birthday" name="birthday" value={{ user.birthday }}
+      />
       <br /><br />
 
       <label for="height">Height(cm): </label>
@@ -49,21 +50,20 @@
 
       <label for="gender">Gender: </label>
       <br />
-      <input type="radio" id="male" name="gender" value="M" />
+      <input type="radio" id="male" name="gender" value="M"  />
       <label for="male">Male</label><br />
-      <input type="radio" id="female" name="gender" value="F" checked />
-      <label for="female">Female</label><br />
-      <br />
+      <input type="radio" id="female" name="gender" value="F" />
+      <label for="female">Female</label>
+      
 
-      {% comment %} <label for="date_signed_up">Date Signed Up: </label>
+      <label for="date_signed_up"></label>
       <input
-        type="date"
+        type="hidden"
+        type='date'
         id="date_signed_up"
         name="date_signed_up"
-        value="{{ user.date_signed_up }}"
+        <value="{{ user.date_signed_up }}" 
       />
-      <br /><br />
-      {% endcomment %}
     </p>
 
     <p>Date Signed up: <br />{{ user.date_signed_up }}</p>
