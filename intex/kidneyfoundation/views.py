@@ -143,14 +143,14 @@ def aboutPageView(request) :
     return render(request, 'kidneyfoundation/about.html', context)
 
 
-def chartPageView(request) :
+def dashboardPageView(request) :
     email = request.session['email']
     data = User.objects.get(email=email)
 
     context = {
         "user" : data
     }
-    return render(request, 'kidneyfoundation/chart.html', context)
+    return render(request, 'kidneyfoundation/dashboard.html', context)
 
 
 def chart2PageView(request) :
