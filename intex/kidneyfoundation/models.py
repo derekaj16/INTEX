@@ -52,12 +52,13 @@ class User(models.Model) :
     date_signed_up = models.DateField(default=datetime.today)
     user_condition = models.ManyToManyField(Comorbidity, through='Condition')
     user_entry = models.ManyToManyField(Food, through='Entry')
-    k_level=models.DecimalField(max_digits=4, decimal_places=2)
-    phos_level=models.DecimalField(max_digits=4, decimal_places=2)
-    na_level=models.PositiveSmallIntegerField()
-    creatinine_level=models.DecimalField(max_digits=4, decimal_places=2)
-    albumin_level=models.DecimalField(max_digits=4, decimal_places=2)
-    blood_sugar_level=models.PositiveSmallIntegerField()
+
+    k_level=models.DecimalField(max_digits=4, decimal_places=2, default=4.4)
+    phos_level=models.DecimalField(max_digits=4, decimal_places=2, default=3.65)
+    na_level=models.PositiveSmallIntegerField(default=140)
+    creatinine_level=models.DecimalField(max_digits=4, decimal_places=2, default=1.2)
+    albumin_level=models.DecimalField(max_digits=4, decimal_places=2, default=3.5)
+    blood_sugar_level=models.PositiveSmallIntegerField(default=85)
 
 
     class Meta :
