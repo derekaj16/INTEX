@@ -38,11 +38,10 @@
   />
   <br /><br />
 
-    <p>
-      Current Birthday = {{ user.birthday }} <br />
+    
+      Current Birthday: {{ user.birthday|date:"SHORT_DATE_FORMAT"}} <br />
       <label for="birthday">Birthday: </label>
-      <input type="date" id="birthday" name="birthday" value={{ user.birthday }}
-      />
+      <input type="date" id="birthday" name="birthday" value="{{ user.birthday|date:"SHORT_DATE_FORMAT"}}"/>
       <br /><br />
 
       <label for="height">Height(cm): </label>
@@ -59,6 +58,7 @@
       <label for="male">Male</label><br />
       <input type="radio" id="female" name="gender" value="F" />
       <label for="female">Female</label>
+      <br />
       
 
       <label for="date_signed_up"></label>
@@ -69,7 +69,7 @@
         <value="{{ user.date_signed_up }}" 
         hidden
       />
-    </p>
+    
 
     <p>Date Signed up: <br />{{ user.date_signed_up }}</p>
 
