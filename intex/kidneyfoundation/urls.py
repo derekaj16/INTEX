@@ -10,6 +10,7 @@ urlpatterns = [
 
     path("about/", aboutPageView, name="about"),
     path("chart/", chartPageView, name="chart"),
+    path("chart2/", chart2PageView, name="chart2"),
     path("suggest/", suggestPageView, name='suggest'),
     path('search/', searchFoodView, name='search'),
     path('home/', homePageView, name='home'),
