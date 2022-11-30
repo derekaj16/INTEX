@@ -1,11 +1,10 @@
 {% extends 'partials/base.html'%}
 {% load crispy_forms_tags %}
 
-<!-- Chartjs CDN --> 
-{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>{% endblock %}
 
-{% block title %}Dashboard{% endblock %}
-{% block script1 %}
+
+{% block chart1Script %}
+<canvas id="myChart2" width="200" height="200"></canvas>
 <script>
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -38,11 +37,10 @@
         }
     });
 </script>
-
 {% endblock %}
 
-{% block script2 %}
 
+{% block chart2Script %}
 <script>
     var ctx = document.getElementById('myChart2').getContext('2d');
     var myChart = new Chart(ctx, {
@@ -77,7 +75,13 @@
 </script>
 {% endblock %}
 
+
+{% block title %}Dashboard{% endblock %}
+
+
 {% block content %}
+<canvas id="myChart2" width="400" height="400"></canvas>
+
 <div class="container" style="padding: 100px 0px 0px 10px">
     <div class="row">
         <div class="col-md-12">
@@ -99,4 +103,12 @@
         </div>
     </div>
 </div>
+
+<div class="container" style="padding: 100px 0px 0px 10px">
+    <h3>Alerts</h3>
+
+
+
+</div>
+
 {% endblock %}

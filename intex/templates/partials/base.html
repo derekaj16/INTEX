@@ -9,10 +9,6 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
 
-        {% block script %}{% endblock %}
-        {% block script1 %}{% endblock %}
-        {% block script2 %}{% endblock %}
-
         <title>{% block title %}{% endblock %}</title>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -21,6 +17,12 @@
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+        <!-- Chartjs CDN --> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+
+        {% block chart1Script %}{% endblock %}
+        {% block chart2Script %}{% endblock %}
     </head>
     <body id="page-top">
         <!-- Navigation-->
