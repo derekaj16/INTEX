@@ -1,66 +1,100 @@
-{% extends 'partials/base1.html'%} {% load crispy_forms_tags %} {% block title
-%} Dashboard {% block content %}
-<div class="row mt-3 pt-3" style="padding: 100px 0px 0px 10px">
-  <div class="col-md-4">
-    <!-- form will go here later-->
-    <div class="border p-3 shadow" style="padding: 100px 0px 0px 10px">
-      <h4 style="padding: 100px 0px 0px 10px">Add Data</h4>
-      <hr />
-      <form method="POST">
+{% extends 'partials/base.html'%} 
+{% load crispy_forms_tags %} 
+{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>{% endblock %}
 
-      <div class="border p-3 shadow" style="padding: 100px 0px 0px 10px">
-        <h4>Graph</h4>
-        <hr />
-        <div
-          class="chart-container"
-          style="position: relative; height: 20vh; width: 40vw"
-        >
-          <canvas id="myChart"></canvas>
-        </div>
+{% block title %} Dashboard {%endblock%}
 
-        <!-- will need to change chart later-->
+{% block script1 %}
 
-        <script>
-          const ctx = document.getElementById("myChart").getContext("2d");
-          const myChart = new Chart(ctx, {
-            type: "bar",
-            data: {
-              labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-              datasets: [
-                {
-                  label: "# of Votes",
-                  data: [12, 19, 3, 5, 2, 3],
-                  backgroundColor: [
-                    "rgba(255, 99, 132, 0.8)",
-                    "rgba(54, 162, 235, 0.8)",
-                    "rgba(255, 206, 86, 0.8)",
-                    "rgba(75, 192, 192, 0.8)",
-                    "rgba(153, 102, 255, 0.8)",
-                    "rgba(255, 159, 64, 0.8)",
-                  ],
-                  borderColor: [
-                    "rgba(255, 99, 132, 1)",
-                    "rgba(54, 162, 235, 1)",
-                    "rgba(255, 206, 86, 1)",
-                    "rgba(75, 192, 192, 1)",
-                    "rgba(153, 102, 255, 1)",
-                    "rgba(255, 159, 64, 1)",
-                  ],
-                  borderWidth: 1,
-                },
-              ],
-            },
-            options: {
-              scales: {
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['K', 'Na', 'Phos'],
+            datasets: [
+            {
+                label: 'Today',
+                data: [12, 19, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
                 y: {
-                  beginAtZero: true,
-                },
-              },
-            },
-          });
-        </script>
-      </div>
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+{% endblock %}
+
+{% block script2 %}
+
+<script>
+    var ctx = document.getElementById('myChart2').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data:
+        {
+            labels: ['K', 'Na', 'Phos'],
+            datasets: [{
+                label: 'Weekly Average',
+                data: [12, 19, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 100px 0px 0px 10px">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Visualizations</h1>
+        </div>
     </div>
-    {% endblock %}
-  </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Today's Intake</h2>
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Weekly Average</h2>
+            <canvas id="myChart2" width="400" height="400"></canvas>
+        </div>
+    </div>
 </div>
+{% endblock %}

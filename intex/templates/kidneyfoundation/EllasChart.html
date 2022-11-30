@@ -1,0 +1,66 @@
+{% extends 'partials/base1.html'%} {% load crispy_forms_tags %} {% block title
+%} Dashboard {% block content %}
+<div class="row mt-3 pt-3" style="padding: 100px 0px 0px 10px">
+  <div class="col-md-4">
+    <!-- form will go here later-->
+    <div class="border p-3 shadow" style="padding: 100px 0px 0px 10px">
+      <h4 style="padding: 100px 0px 0px 10px">Add Data</h4>
+      <hr />
+      <form method="POST">
+
+      <div class="border p-3 shadow" style="padding: 100px 0px 0px 10px">
+        <h4>Graph</h4>
+        <hr />
+        <div
+          class="chart-container"
+          style="position: relative; height: 20vh; width: 40vw"
+        >
+          <canvas id="myChart"></canvas>
+        </div>
+
+        <!-- will need to change chart later-->
+
+        <script>
+          const ctx = document.getElementById("myChart").getContext("2d");
+          const myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+              datasets: [
+                {
+                  label: "# of Votes",
+                  data: [12, 19, 3, 5, 2, 3],
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.8)",
+                    "rgba(54, 162, 235, 0.8)",
+                    "rgba(255, 206, 86, 0.8)",
+                    "rgba(75, 192, 192, 0.8)",
+                    "rgba(153, 102, 255, 0.8)",
+                    "rgba(255, 159, 64, 0.8)",
+                  ],
+                  borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          });
+        </script>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</div>
