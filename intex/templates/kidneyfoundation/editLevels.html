@@ -13,6 +13,8 @@
   <form name="form" method="post" action="{% url 'updateLevels' %}">
     {% csrf_token %}
 
+    <input type="text" name="email" id="email" hidden>
+
     <label for = "k_level">K Level:</label>
     <input type="text" id="k_level" name="k_level" value="{{user.k_level}}" />
     <br /><br />
