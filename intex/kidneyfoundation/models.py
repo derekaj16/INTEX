@@ -45,6 +45,7 @@ class User(models.Model) :
     )
 
     email = models.EmailField(max_length=300, primary_key=True)
+    password = models.CharField(max_length=50, default='password')
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     birthday = models.DateField()
