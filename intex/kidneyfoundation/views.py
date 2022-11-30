@@ -7,6 +7,16 @@ from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import User # need to make model for this
 from datetime import datetime
 
+# feet/inches to centimeters Function
+def heightToCm(feet, inches) :
+    cm = ((float(feet) * 12) + float(inches)) * 2.54
+    return round(cm, 2)
+
+# Pounds to Kilograms Function
+def lbsToKg(lbs) :
+    kg = float(lbs) * 0.453592
+    return round(kg, 2)
+
 # Create your views here.
 def indexPageView(request, error=False) :
     context = {
@@ -30,8 +40,8 @@ def addUserPageView(request) :
         user.first_name = request.POST[ 'first_name' ]
         user.last_name = request.POST[ 'last_name' ]
         user.birthday = request.POST[ 'birthday' ]
-        user.height = request.POST[ 'height' ]
-        user.weight = request.POST[ 'weight' ]
+        user.height = heightToCm(request.POST[ 'feet' ], request.POST['inches'])
+        user.weight = lbsToKg(request.POST[ 'weight' ])
         user.gender = request.POST[ 'gender' ]
         user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]
