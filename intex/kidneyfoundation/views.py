@@ -12,24 +12,26 @@ def indexPageView(request) :
     }
     return render(request, 'kidneyfoundation/index.html', context)
 
-def signInPageView(request) :
+# def signInPageView(request) :
 
-    if request.method == 'POST' :
-        username = request.POST['email']
-        password = request.post['password']
+#     if request.method == 'POST' :
+#         username = request.POST['email']
+#         password = request.post['password']
 
-        usercred = authenticate(username=username, password=password)
+#         usercred = authenticate(username=username, password=password)
 
-        if usercred is not None :
-            # log in the user
-            login(request, usercred)
-            # send them to the main page
-            return render(request, 'kidneyfoundation/index.html')
+#         if usercred is not None :
+#             # log in the user
+#             login(request, usercred)
+#             # send them to the main page
+#             return render(request, 'kidneyfoundation/index.html')
 
-        else :
-            messages.error(request, "Sorry, we couldn't sign you in. \n(Bad credentials)")
+#         else :
 
-    return render(request, 'kidneyfoundation/signin.html')
+#             messages.error(request, "Sorry, we couldn't sign you in. \n(Bad credentials)")
+#             return redirect('dashboard-index')
+
+#     return render(request, 'kidneyfoundation/signin.html')
 
 
 def aboutPageView(request) :
@@ -110,7 +112,17 @@ def addUserPageView(request) :
         user.on_dialysis = request.POST[ 'on_dialysis' ]
         user.stage = request.POST[ 'stage' ]
         
+        # if User.objects.filter(email=email) :
+        #     messages.error(request, "That username already exists. Please use a different username")
+
+
         user.save()
+
+        # creates a django user???
+        myuser = User.objects.create_user(username, email, password)
+
+        # creates a django user???
+        myuser.save()
 
         return showUserPageView(request, user.email)
     else: 
