@@ -3,6 +3,7 @@ from django.http import HttpResponse
 import requests
 import json
 from kidneyfoundation.models import User # need to make model for this
+from datetime import datetime
 
 # Create your views here.
 def indexPageView(request):
@@ -84,9 +85,10 @@ def addUserPageView(request) :
         user.height = request.POST[ 'height' ]
         user.weight = request.POST[ 'weight' ]
         user.gender = request.POST[ 'gender' ]
-        user.date_signed_up = request.POST[ 'date_signed_up' ]
+        user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]
         user.stage = request.POST[ 'stage' ]
+
         
         user.save()
 
