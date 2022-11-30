@@ -2,14 +2,36 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import requests
 import json
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import User # need to make model for this
 from datetime import datetime
 
 # Create your views here.
-def indexPageView(request):
+def indexPageView(request) :
     context = {
     }
     return render(request, 'kidneyfoundation/index.html', context)
+
+def signInPageView(request) :
+
+    if request.method == 'POST' :
+        username = request.POST['email']
+        password = request.post['password']
+
+        usercred = authenticate(username=username, password=password)
+
+        if usercred is not None :
+            # log in the user
+            login(request, usercred)
+            # send them to the main page
+            return render(request, 'kidneyfoundation/index.html')
+
+        else :
+            messages.error(request, "Sorry, we couldn't sign you in. \n(Bad credentials)")
+
+    return render(request, 'kidneyfoundation/signin.html')
+
 
 def aboutPageView(request) :
     return render(request, 'kidneyfoundation/about.html')
@@ -95,3 +117,5 @@ def addUserPageView(request) :
         return showUserPageView(request, user.email)
     else: 
         return render (request, 'kidneyfoundation/addUser.html')
+
+
