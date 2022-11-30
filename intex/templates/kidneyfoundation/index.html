@@ -20,21 +20,21 @@
       <center>
         <div class="container pt-5">
           <div class="form-group">
-            <form method="POST" action="{% url 'login'  %}">
+            <form method="POST" action="{% url 'login' %}">
               {% csrf_token %}
               <h1 class="pb-3">Login</h1>
 
               <label for="email"></label>
-              <input type="text" id="email" name="email" class="mb-3" aria-describedby="emailHelp" placeholder="Enter email"><br>
+              <input type="text" id="email" name="email" class="mb-3" aria-describedby="email" placeholder="Enter email"><br>
 
               <label for="password"></label>
               <input type="password" id="password" name="password"  placeholder="Password"><br><br>
 
               <button type="submit" class="btn btn-primary">Log In</button><br><br>
 
-              <a href="{% url 'addUser' %}">Sign Up</a>
-
             </form>
+            {% if error %}{{errorMessage}}<br>{% endif %}
+            <a href="{% url 'addUser' %}">Sign Up</a>
           </div>
         </div>
       </center>

@@ -17,7 +17,9 @@
         <p><b>Date Signed Up:</b> {{user.date_signed_up}}</p>
         <p><b>User on Dialysis?</b> {{user.on_dialysis}}</p>
         <p><b>Stage:</b> {{user.stage}}</p>
-        <a class='btn btn-primary' href="{% url 'edit' email=user.email %}">Edit Account Details</a>
+        <a class='btn btn-primary' href="{% url 'edit' %}">Edit Account Details</a>
+        <br><br>
+        <a class='btn btn-secondary' href="{% url 'logout' %}">Log Out</a>
     </p>
 </div>
 {% endblock %}

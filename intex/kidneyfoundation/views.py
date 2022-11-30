@@ -8,33 +8,83 @@ from kidneyfoundation.models import User # need to make model for this
 from datetime import datetime
 
 # Create your views here.
-def indexPageView(request) :
-    return render(request, 'kidneyfoundation/index.html')
+def indexPageView(request, error=False) :
+    context = {
+        'error' : error,
+        'errorMessage' : 'Sorry. We couldn\'t find a user with your email :/'
+    }
+    
+    return render(request, 'kidneyfoundation/index.html', context)
 
 
 def signupPageView(request) :
     return render(request, 'kidneyfoundation/signup.html')
 
 
+def addUserPageView(request) :
+    if request.method == 'POST' :
+        user = User()
+
+        user.email = request.POST[ 'email' ]
+        user.password = request.POST['password']
+        user.first_name = request.POST[ 'first_name' ]
+        user.last_name = request.POST[ 'last_name' ]
+        user.birthday = request.POST[ 'birthday' ]
+        user.height = request.POST[ 'height' ]
+        user.weight = request.POST[ 'weight' ]
+        user.gender = request.POST[ 'gender' ]
+        user.date_signed_up = datetime.now()
+        user.on_dialysis = request.POST[ 'on_dialysis' ]
+        user.stage = request.POST[ 'stage' ]
+        user.k_level = request.POST[ 'k_level' ]
+        user.na_level = request.POST[ 'na_level' ]
+        user.phos_level = request.POST[ 'phos_level' ]
+        user.creatinine_level = request.POST[ 'creatinine_level' ]
+        user.albumin_level = request.POST[ 'albumin_level' ]
+        user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
+        
+        user.save()
+
+        # creates a django user???
+        # myuser = User.objects.create_user(username, email, password)
+        # creates a django user???
+        # myuser.save()
+
+        return indexPageView(request)
+    else: 
+        return render(request, 'kidneyfoundation/addUser.html')
+
+
 def LoginView(request) :
+    isError = False
 
     if request.method == 'POST' :
-        username = request.POST['email']
+        email = request.POST['email']
         password = request.POST['password']
 
         allUsers = User.objects.all()
 
         for current_user in allUsers :
-            if username == current_user.email :
-                user = User.objects.get(email=username)
+            if email == current_user.email and password == current_user.password :
+                # get the user object with that email
+                user = User.objects.get(email=email)
 
-            return render(request, 'kidneyfoundation/home.html', {'email': user.email})
+                # store that user's email to session storage
+                request.session['email'] = user.email
 
-        return redirect('index')
+                # Then get that email as a variable called email
+                # email = request.session.get('email', 'davemurdock55@gmail.com')
+                
+                # Then go and render the homepage, passing the session variable as the value for the email key in a nameless dictionary
+                return redirect('home')
+            else :
+                isError = True
 
+    return indexPageView(request, isError)
 
-def homePageView(request, email) :
-    return render(request, 'kidneyfoundation/home.html', {'email': email})
+def LogoutView(request) :
+    request.session['email'] = None
+    return render(request, 'kidneyfoundation/index.html')
 
 # def signInPageView(request) :
 
@@ -58,42 +108,85 @@ def homePageView(request, email) :
 #     return render(request, 'kidneyfoundation/signin.html')
 
 
+def homePageView(request) :
+
+    # getting the current user's email from session storage
+    email = request.session['email']
+
+    # getting the object that has that email
+    data = User.objects.get(email=email)
+
+    # passing that user object's data to a dictionary so we can pass that to the page
+    context = {
+        "user" : data
+    }
+    return render(request, 'kidneyfoundation/home.html', context)
+
+
 def aboutPageView(request) :
-    return render(request, 'kidneyfoundation/about.html')
+    email = request.session['email']
+    data = User.objects.get(email=email)
+
+    context = {
+        "user" : data
+    }
+    return render(request, 'kidneyfoundation/about.html', context)
+
 
 def chartPageView(request) :
-    return render(request, 'kidneyfoundation/chart.html')
+    email = request.session['email']
+    data = User.objects.get(email=email)
+
+    context = {
+        "user" : data
+    }
+    return render(request, 'kidneyfoundation/chart.html', context)
+
 
 def suggestPageView(request, data=None) :
+    email = request.session['email']
+    data = User.objects.get(email=email)
+
     context = {
-        'data': data
+        "user" : data
     }
     return render(request, 'kidneyfoundation/suggest.html', context)
 
+
 def searchFoodView(request) :
+    email = request.session['email']
+    data = User.objects.get(email=email)
+
+    context = {
+        "user" : data
+    }
+
     if request.method == 'POST' :
         r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&pageSize=2&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
     if r.status_code == 200 :
         json_data = json.loads(r.content)
         if len(json_data['foods']) > 0 :
-            return suggestPageView(request, json_data['foods'])
+            return suggestPageView(request, json_data['foods'], context)
         else :
-            return suggestPageView(request, 'Your search for ' + request.POST['search'] + ' was not found :/')
+            return suggestPageView(request, 'Your search for ' + request.POST['search'] + ' was not found :/', context)
 
-def showUserPageView(request, email) :
+
+def showUserPageView(request) :
+    email = request.session['email']
     data = User.objects.get(email=email)
 
     context = {
-        "user": data
+        "user" : data
     }
 
     return render(request, 'kidneyfoundation/showUser.html', context)
 
 
 
-def editUserPageView(request, email):
+def editUserPageView(request):
+    email = request.session['email']
     data = User.objects.get(email=email)
-    
+
     context = {
         "user" : data
     }
@@ -101,6 +194,13 @@ def editUserPageView(request, email):
     return render(request, 'kidneyfoundation/editUser.html', context)
 
 def updateUserInfoView(request) :
+    email = request.session['email']
+    data = User.objects.get(email=email)
+
+    context = {
+        "user" : data
+    }
+
     if request.method == 'POST' :
         email = request.POST[ 'email' ]
 
@@ -120,63 +220,30 @@ def updateUserInfoView(request) :
         
         user.save()
 
-    return showUserPageView(request, user.email)
-
-def addUserPageView(request) :
-    if request.method == 'POST' :
-        user = User()
-
-        user.email = request.POST[ 'email' ]
-        user.first_name = request.POST[ 'last_name' ]
-        user.last_name = request.POST[ 'first_name' ]
-        user.birthday = request.POST[ 'birthday' ]
-        user.height = request.POST[ 'height' ]
-        user.weight = request.POST[ 'weight' ]
-        user.gender = request.POST[ 'gender' ]
-        user.date_signed_up = datetime.now()
-        user.on_dialysis = request.POST[ 'on_dialysis' ]
-        user.stage = request.POST[ 'stage' ]
-        user.k_level = request.POST[ 'k_level' ]
-        user.na_level = request.POST[ 'na_level' ]
-        user.phos_level = request.POST[ 'phos_level' ]
-        user.creatinine_level = request.POST[ 'creatinine_level' ]
-        user.albumin_level = request.POST[ 'albumin_level' ]
-        user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
-
-        
-        # if User.objects.filter(email=email) :
-        #     messages.error(request, "That username already exists. Please use a different username")
 
 
-        user.save()
-
-        # creates a django user???
-        # myuser = User.objects.create_user(username, email, password)
-
-        # creates a django user???
-        # myuser.save()
-
-        return showUserPageView(request, user.email)
-    else: 
-        return render (request, 'kidneyfoundation/addUser.html')
+    return showUserPageView(request)
 
 
 
 
-def showLevelsPageView(request, email) :
+
+def showLevelsPageView(request) :
+    email = request.session['email']
     data = User.objects.get(email=email)
 
     context = {
-        "user": data
+        "user" : data
     }
 
     return render(request, 'kidneyfoundation/showLevels.html', context)
 
 
 
-def editLevelsPageView(request, email):
+def editLevelsPageView(request):
+    email = request.session['email']
     data = User.objects.get(email=email)
-    
+
     context = {
         "user" : data
     }
@@ -186,6 +253,13 @@ def editLevelsPageView(request, email):
 
 
 def updateLevelsView(request) :
+    email = request.session['email']
+    data = User.objects.get(email=email)
+
+    context = {
+        "user" : data
+    }
+    
     if request.method == 'POST' :
         email = request.POST[ 'email' ]
 
@@ -199,5 +273,5 @@ def updateLevelsView(request) :
         user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
         
         user.save()
-
-    return showLevelsPageView(request, user.email)
+    
+    return showLevelsPageView(request)
