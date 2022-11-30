@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Login</title>
+        <title>Sign Up</title>
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -16,29 +16,26 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     </head>
     <body id="page-top">
-
       <center>
         <div class="container pt-5">
-          <div class="form-group">
-            <form method="POST" action="{% url 'login'  %}">
-              {% csrf_token %}
-              <h1 class="pb-3">Login</h1>
+          <form action="">
+            <h1 class="form pb-3">Login</h1>
 
-              <label for="email"></label>
-              <input type="text" id="email" name="email" class="mb-3" aria-describedby="emailHelp" placeholder="Enter email"><br>
+            <label for="email"></label>
+            <input type="text" id="email" name="email" class="mb-3"><br>
 
-              <label for="password"></label>
-              <input type="password" id="password" name="password"  placeholder="Password"><br><br>
+            <label for="password"></label>
+            <input type="password" id="password" name="password"><br><br>
 
-              <button type="submit" class="btn btn-primary">Log In</button><br><br>
+            <button type="submit" class="btn btn-primary">Log In</button><br><br>
 
-              <a href="{% url 'addUser' %}">Sign Up</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
 
-            </form>
-          </div>
+          </form>
         </div>
       </center>
 
+      
 
 <!-- Footer-->
    <footer class="footer py-4" style="margin-top: 400px">

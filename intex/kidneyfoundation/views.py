@@ -9,9 +9,32 @@ from datetime import datetime
 
 # Create your views here.
 def indexPageView(request) :
-    context = {
-    }
-    return render(request, 'kidneyfoundation/index.html', context)
+    return render(request, 'kidneyfoundation/index.html')
+
+
+def signupPageView(request) :
+    return render(request, 'kidneyfoundation/signup.html')
+
+
+def LoginView(request) :
+
+    if request.method == 'POST' :
+        username = request.POST['email']
+        password = request.POST['password']
+
+        allUsers = User.objects.all()
+
+        for current_user in allUsers :
+            if username == current_user.email :
+                user = User.objects.get(email=username)
+
+            return render(request, 'kidneyfoundation/home.html', {'email': user.email})
+
+        return redirect('index')
+
+
+def homePageView(request, email) :
+    return render(request, 'kidneyfoundation/home.html', {'email': email})
 
 # def signInPageView(request) :
 
@@ -84,8 +107,9 @@ def updateUserInfoView(request) :
         user = User.objects.get(email=email)
 
         user.email = request.POST[ 'email' ]
-        user.first_name = request.POST[ 'last_name' ]
-        user.last_name = request.POST[ 'first_name' ]
+        user.password = request.POST['password']
+        user.first_name = request.POST[ 'first_name' ]
+        user.last_name = request.POST[ 'last_name' ]
         user.birthday = request.POST[ 'birthday' ]
         user.height = request.POST[ 'height' ]
         user.weight = request.POST[ 'weight' ]
