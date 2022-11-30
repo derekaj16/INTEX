@@ -156,8 +156,9 @@ def dashboardPageView(request) :
 
     for entry in entrydata_all :
         if entry.date >= a_week_ago and entry.date <= today :
-            day_of_week = entry.date.strftime('%A')
-            rolling_week_entries[]
+            day_of_week = str(entry.date.strftime('%A'))
+            rolling_week_entries[day_of_week]
+            
 
     
 
