@@ -19,18 +19,60 @@ class Comorbidity(models.Model) :
 
 class Food(models.Model) :
     fdcId = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=100)
-    k = models.DecimalField(max_digits=8, decimal_places=3)
-    na = models.DecimalField(max_digits=8, decimal_places=3)
-    phos = models.DecimalField(max_digits=8, decimal_places=3)
-    protein = models.DecimalField(max_digits=8, decimal_places=3)
-
+    food_name = models.CharField(max_length=100)
+    serving_size = models.DecimalField(max_digits=6, decimal_places=2)
+    k_value = models.DecimalField(max_digits=6, decimal_places=2)
+    k_pdv = models.PositiveSmallIntegerField()
+    na_value = models.DecimalField(max_digits=6, decimal_places=2)
+    na_pdv = models.PositiveSmallIntegerField()
+    phos_value = models.DecimalField(max_digits=6, decimal_places=2)
+    phos_pdv = models.PositiveSmallIntegerField()
+    protien_value = models.DecimalField(max_digits=6, decimal_places=2)
+    fat_value = models.DecimalField(max_digits=6, decimal_places=2)
+    carbs_value = models.DecimalField(max_digits=6, decimal_places=2)
+    calories = models.DecimalField(max_digits=6, decimal_places=2)
 
     class Meta :
         db_table = 'food'
 
     def __str__(self) :
-        return self.fdcId
+        sString = self.food_name + " " + str(self.fdcID)
+        return sString
+
+class Entry(models.Model) :
+    MEAL_TYPE = (
+        ('B', 'Breakfast'),
+        ('L', 'Lunch'),
+        ('D', 'Dinner'),
+        ('S', 'Snack')
+    )
+    entry_id = models.AutoField(primary_key=True)
+    date = models.DateField(default=datetime.now)
+    meal_type = models.CharField(max_length=1, choices=MEAL_TYPE)
+    num_servings = models.DecimalField(max_digits=7, decimal_places=2)
+    email = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, db_column='email')
+    fdcId = models.ForeignKey('Food', on_delete=models.SET_NULL, null=True, db_column='fdcId')
+    k_intake = models.DecimalField(max_digits=7, decimal_places=2)
+    na_intake = models.DecimalField(max_digits=7, decimal_places=2)
+    phos_intake = models.DecimalField(max_digits=7, decimal_places=2)
+    protein_intake = models.DecimalField(max_digits=7, decimal_places=2)
+    carb_intake = models.DecimalField(max_digits=7, decimal_places=2)
+    fat_intake = models.DecimalField(max_digits=7, decimal_places=2)
+
+    class Meta :
+        db_table = 'entry'
+
+    def __str__(self) :
+        sString = self.email + " " + self.date + " " + self.meal_type
+        return sString
+
+    class Meta :
+        db_table = 'entry'
+        unique_together = (('email', 'fdcId'))
+
+    def __str__(self) :
+        return self.date
+
 
 class User(models.Model) :
     GENDER = (
@@ -71,6 +113,7 @@ class User(models.Model) :
 
     def __str__(self) :
         return self.first_name + ' ' + self.last_name
+        
 
 class Condition(models.Model) :
     email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, db_column='email')
@@ -82,24 +125,6 @@ class Condition(models.Model) :
     def __str__(self) :
         return self.comId
 
-class Entry(models.Model) :
-    MEAL_TYPE = (
-        ('B', 'Breakfast'),
-        ('L', 'Lunch'),
-        ('D', 'Dinner'),
-        ('S', 'Snack')
-    )
-    email = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, db_column='email')
-    fdcId = models.ForeignKey(Food, on_delete=models.SET_NULL, null=True, db_column='fdcId')
-    date = models.DateField()
-    meal_type = models.CharField(max_length=1, choices=MEAL_TYPE)
-    quantity = models.PositiveIntegerField()
 
-    class Meta :
-        db_table = 'entry'
-        unique_together = (('email', 'fdcId'))
-
-    def __str__(self) :
-        return self.date
 
 
