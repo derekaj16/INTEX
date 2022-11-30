@@ -1,23 +1,31 @@
-{% extends 'partials/base1.html'%} {% load crispy_forms_tags %} {% block title
-%} Dashboard {% block content %}
-<div class="row mt-3 pt-3" style="padding: 100px 0px 0px 10px">
-  <div class="col-md-4">
-    <!-- form will go here later-->
-    <div class="border p-3 shadow" style="padding: 100px 0px 0px 10px">
-      <h4 style="padding: 100px 0px 0px 10px">Add Data</h4>
-      <hr />
-      <form method="POST">
+{% extends 'partials/base.html'%}
+{% load crispy_forms_tags %}
 
-      <div class="border p-3 shadow" style="padding: 100px 0px 0px 10px">
-        <h4>Graph</h4>
-        <hr />
-        <div
-          class="chart-container"
-          style="position: relative; height: 20vh; width: 40vw"
-        >
-          <canvas id="myChart"></canvas>
-        </div>
+<!-- Chartjs CDN --> 
+{% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>{% endblock %}
 
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div class = "row mt-3 pt-3">
+    <div class = "col-md-4">
+        <!-- form will go here later-->
+        <div class = "border p-3 shadow">
+            <h4>Add Data</h4>
+            <hr>
+            <form method="POST">{% comment %} The csrf_token is a secure and random token that is needed to secure the application and the submitting of the form. {% endcomment %}
+                {% csrf_token %}
+                {{ form | crispy }}
+                <input class = 'btn btn-success btn-block' type='submit' value = 'Add'>
+            </form>
+    </div>
+    <div class = "col-md-8">
         <!-- will need to change chart later-->
 
         <script>
