@@ -159,22 +159,20 @@ def editLevelsPageView(request, email):
 
     return render(request, 'kidneyfoundation/editLevels.html', context)
 
+
+
 def updateLevelsView(request) :
     if request.method == 'POST' :
         email = request.POST[ 'email' ]
 
         user = User.objects.get(email=email)
-        
-        user.email = request.POST[ 'email' ]
-        user.first_name = request.POST[ 'last_name' ]
-        user.last_name = request.POST[ 'first_name' ]
-        user.birthday = request.POST[ 'birthday' ]
-        user.height = request.POST[ 'height' ]
-        user.weight = request.POST[ 'weight' ]
-        user.gender = request.POST[ 'gender' ]
-        # user.date_signed_up = request.POST[ 'date_signed_up' ]
-        user.on_dialysis = request.POST[ 'on_dialysis' ]
-        user.stage = request.POST[ 'stage' ]
+
+        user.k_level = request.POST[ 'k_level' ]
+        user.na_level = request.POST[ 'na_level' ]
+        user.phos_level = request.POST[ 'phos_level' ]
+        user.creatinine_level = request.POST[ 'creatinine_level' ]
+        user.albumin_level = request.POST[ 'albumin_level' ]
+        user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
         
         user.save()
 
