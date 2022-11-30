@@ -19,6 +19,8 @@ class Comorbidity(models.Model) :
 
 class Food(models.Model) :
     fdcId = models.IntegerField(primary_key=True)
+    
+
 
     class Meta :
         db_table = 'food'
@@ -86,3 +88,5 @@ class Entry(models.Model) :
 
     def __str__(self) :
         return self.date
+
+
