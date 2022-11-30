@@ -10,8 +10,9 @@
         <p><b>Phos Level:</b> {{user.phos_level}}</p>
         <p><b>Creatanine Level:</b> {{user.creatinine_level}}</p>
         <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
-        <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
+        <p><b>Blood Sugar Level:</b> {{user.blood_sugar_level}}</p>
 
+        {% comment %} May need to add {{user.email}} somewhere{% endcomment %}
         <a class='btn btn-primary' href="{% url 'editLevels' email=user.email %}">Update Levels</a>
     </p>
 </div>

@@ -58,10 +58,10 @@ def searchFoodView(request) :
             return suggestPageView(request, 'Your search for ' + request.POST['search'] + ' was not found :/')
 
 def showUserPageView(request, email) :
-    user = User.objects.get(email=email)
+    data = User.objects.get(email=email)
 
     context = {
-        "user": user
+        "user": data
     }
 
     return render(request, 'kidneyfoundation/showUser.html', context)
@@ -137,3 +137,45 @@ def addUserPageView(request) :
         return render (request, 'kidneyfoundation/addUser.html')
 
 
+
+
+def showLevelsPageView(request, email) :
+    data = User.objects.get(email=email)
+
+    context = {
+        "user": data
+    }
+
+    return render(request, 'kidneyfoundation/showLevels.html', context)
+
+
+
+def editLevelsPageView(request, email):
+    data = User.objects.get(email=email)
+    
+    context = {
+        "user" : data
+    }
+
+    return render(request, 'kidneyfoundation/editLevels.html', context)
+
+def updateLevelsView(request) :
+    if request.method == 'POST' :
+        email = request.POST[ 'email' ]
+
+        user = User.objects.get(email=email)
+        
+        user.email = request.POST[ 'email' ]
+        user.first_name = request.POST[ 'last_name' ]
+        user.last_name = request.POST[ 'first_name' ]
+        user.birthday = request.POST[ 'birthday' ]
+        user.height = request.POST[ 'height' ]
+        user.weight = request.POST[ 'weight' ]
+        user.gender = request.POST[ 'gender' ]
+        # user.date_signed_up = request.POST[ 'date_signed_up' ]
+        user.on_dialysis = request.POST[ 'on_dialysis' ]
+        user.stage = request.POST[ 'stage' ]
+        
+        user.save()
+
+    return showLevelsPageView(request, user.email)
