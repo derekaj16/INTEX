@@ -1,5 +1,6 @@
 {% extends 'partials/base.html'%} 
 {% load crispy_forms_tags %} 
+
 {% block script %}<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>{% endblock %}
 
 {% block title %} Dashboard {%endblock%}
@@ -15,7 +16,7 @@
             datasets: [
             {
                 label: 'Today',
-                data: [12, 19, 3],
+                data: [{{user.k_level}}, {{user.na_level}}, {{user.phos_level}}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -52,7 +53,7 @@
             labels: ['K', 'Na', 'Phos'],
             datasets: [{
                 label: 'Weekly Average',
-                data: [12, 19, 3],
+                data: [{{user.k_level}}, {{user.na_level}}, {{user.phos_level}}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',
@@ -88,12 +89,14 @@
         <div class="col-md-12">
             <h2>Today's Intake</h2>
             <canvas id="myChart" width="400" height="400"></canvas>
+            <p>Just a test to see if it works</p>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <h2>Weekly Average</h2>
             <canvas id="myChart2" width="400" height="400"></canvas>
+            <p>Just a test to see if it works again...</p>
         </div>
     </div>
 </div>
