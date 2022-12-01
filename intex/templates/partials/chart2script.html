@@ -18,7 +18,7 @@
                 borderWidth: 1
             },
             {
-                //ONLY Na LEVELS IN HERE (one for each day of the week)
+                //OLY Na LEVELS IN HERE (one for each day of the week)
                 label: 'Na Level',
                 data: {{ na_data }},
                 backgroundColor: [
@@ -45,6 +45,17 @@
         options: {
             scales: {
                 y: {
+                    title: {
+                        display: true,
+                        text: "Weekly Levels (mg)"
+                    },
+                    
+                    //ticks: {
+                    //    // Include "mg" in the ticks
+                    //    callback: function(value, index, ticks) {
+                    //    return value + " mg";
+                    //    },
+                    //},
                     beginAtZero: true
                 }
             }

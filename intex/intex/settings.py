@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'kidneyfoundation.apps.KidneyfoundationConfig',
     'crispy_forms',
+    'mathfilters',
 
 ]
 
@@ -84,8 +85,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'kidneyfoundation',
         'USER': 'postgres',
-        'PASSWORD': 'bambooand',
-        'HOST': 'localhost',
+        'PASSWORD': 'postgres',
+        'HOST': 'localhost'
     }
 }
 

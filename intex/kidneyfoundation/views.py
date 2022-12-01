@@ -10,8 +10,8 @@ from decimal import Decimal
 
 
 # feet/inches to centimeters Function
-def heightToCm(feet, inches) :
-    cm = ((float(feet) * 12) + float(inches)) * 2.54
+def heightToInches(feet, inches) :
+    cm = (float(feet) * 12) + float(inches)
     return round(cm, 2)
 
 # Pounds to Kilograms Function
@@ -37,8 +37,8 @@ def addUserPageView(request) :
         user.first_name = request.POST[ 'first_name' ]
         user.last_name = request.POST[ 'last_name' ]
         user.birthday = request.POST[ 'birthday' ]
-        user.height = heightToCm(request.POST[ 'feet' ], request.POST['inches'])
-        user.weight = lbsToKg(request.POST[ 'weight' ])
+        user.height = heightToInches(request.POST[ 'feet' ], request.POST['inches'])
+        user.weight = request.POST[ 'weight' ]
         user.gender = request.POST[ 'gender' ]
         user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]
@@ -141,10 +141,11 @@ def aboutPageView(request) :
 
 def dashboardPageView(request) :
     email = request.session['email']
-    userdata = User.objects.get(email=email)
+    user = User.objects.get(email=email)
 
     # getting all the records from the entry table
-    entrydata_all = Entry.objects.filter(email=email)
+    entrydata_all = Entry.objects.select_related('fdcId').filter(email=email)
+    
 
     today = date.today()
     a_week_ago = today - timedelta(days=7)
@@ -157,7 +158,6 @@ def dashboardPageView(request) :
         4: [], # 4 days ago
         5: [], # 5 days ago
         6: [], # 6 days ago
-        7: [], # 1 full week ago (if today is Wendesday, this is last Wednesday)
     }
 
     # For every entry record in the Entry table
@@ -171,35 +171,98 @@ def dashboardPageView(request) :
 
     # Creating a list to hold all of the days of the week over the past rolling week
     days_of_week = []
+    currentDate = datetime.today()
+    for day in range(0,7) :
+        days_of_week.append(datetime.strftime(currentDate, '%a, %b %d'))
+        currentDate = currentDate - timedelta(days=1)
+
+    days_of_week.reverse()
+
 
     # For each day (key) in the rolling_week_entries table
-    for day_number in rolling_week_entries:
-        # get the number of days before the current day
-        if len(rolling_week_entries[day_number]) > 0 :
-            entry_day_of_week_date = rolling_week_entries[day_number][0].date
+    # for day_number in rolling_week_entries:
+    #     # get the number of days before the current day
+    #     if len(rolling_week_entries[day_number]) > 0 :
+    #         entry_day_of_week_date = rolling_week_entries[day_number][0].date
 
-        # get the day of the week of the entries of the day ago thing
-            day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
+    #     # get the day of the week of the entries of the day ago thing
+    #         day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
 
-        # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
-            days_of_week.append(day_of_week_name)
+    #     # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
+    #         days_of_week.append(day_of_week_name)
 
     k_data = []
     na_data = []
     phos_data = []
 
-    for day in rolling_week_entries :
-        for entry in rolling_week_entries[day] :
-            
-            k_data.append(int(entry.k_intake))
-            na_data.append(int(entry.na_intake))
-            phos_data.append(int(entry.phos_intake))
+    
 
+
+    # for each day in the rolling_week_entries dictionary
+    for day in rolling_week_entries :
+        # for each entry in that day
+        dayK_intake = 0
+        dayNa_intake = 0
+        dayPhos_intake = 0
+        
+        if len(rolling_week_entries[day]) > 0 :
+            for entry in rolling_week_entries[day] :
+                # getting the intake for each nutrient by mutliplying the nutrient's value for the food in the entry by the number of servings
+                entryK_intake = int(entry.fdcId.k_value * entry.num_servings)
+                entryNa_intake = int(entry.fdcId.na_value * entry.num_servings)
+                entryPhos_intake = int(entry.fdcId.phos_value * entry.num_servings)
+                
+        else :
+            entryK_intake = 0
+            entryNa_intake = 0
+            entryPhos_intake = 0
+                
+            # adding the entry's intake to the total intake of that nutrient for that day
+        dayK_intake += entryK_intake
+        dayNa_intake += entryNa_intake
+        dayPhos_intake += entryPhos_intake
+
+        # add the intake (# servings * nutrient amount) for each nutrient for that day to the list corresponding with that nutrient
+        k_data.append(dayK_intake)
+        na_data.append(dayNa_intake)
+        phos_data.append(dayPhos_intake)
+
+        # get today's data
+        todays_k_intake = k_data[0]
+        todays_na_intake = na_data[0]
+        todays_phos_intake = phos_data[0]
+        
+    if user.on_dialysis :
+        recommended_k = 2000
+        recommended_na = (750 + 2000) / 2 # the middle number (optimal) between 750-2000
+        recommended_phos = (800 + 1000) / 2 # the middle number (optimal) between 800-1000
+
+    elif user.stage in (3,4): 
+        recommended_k = (2500 + 3000) / 2 # the middle number (optimal) between 2500-3000
+        recommended_na = (1495 + 2300) / 2 # the middle number (optimal) between 1495-2300
+        recommended_phos = (800 + 1000) / 2 # the middle number (optimal) between 800-1000
+    else :
+        recommended_k = 3500
+        recommended_na = 2300
+        recommended_phos = 3000
+
+    todays_k_percent = (todays_k_intake / recommended_k) * 100
+    todays_na_percent = (todays_na_intake / recommended_na) * 100
+    todays_phos_percent = (todays_phos_intake / recommended_phos) * 100
+
+    # reversing the lists so that the dashboard shows the days in chronological order (not backwards chronological which would have today on the left)
+    k_data.reverse()
+    na_data.reverse()
+    phos_data.reverse()
+    
     context = {
-        "user" : userdata,
+        "user" : user,
         "past_week_entries": rolling_week_entries,
         "days_of_week": days_of_week,
         'logged_in' : loggedIn(request),
+        "todays_k_percent": todays_k_percent,
+        "todays_na_percent": todays_na_percent,
+        "todays_phos_percent": todays_phos_percent,
         'k_data' : k_data,
         'na_data' : na_data,
         'phos_data' : phos_data

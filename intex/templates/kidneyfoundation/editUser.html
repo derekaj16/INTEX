@@ -1,5 +1,6 @@
 {% extends 'partials/base.html' %} 
 {% load static %} 
+{%load mathfilters%}
 {% block title %}Edit Account Info{% endblock %}
 
 {% block content %}
@@ -27,10 +28,19 @@
 
     <label for="password">Password: </label>
     <input
+      type="password"
+      id="password"
+      name="password"
+      value="{{ user.password }}"
+      readonly
+    />
+    <input
       type="text"
       id="password"
       name="password"
       value="{{ user.password }}"
+      required
+      hidden
     />
     <br /><br />
 
@@ -42,6 +52,7 @@
       name="first_name"
       value="{{ user.first_name }}"
       autofocus
+      required
     />
     <br /><br />
 
@@ -51,22 +62,20 @@
       id="last_name"
       name="last_name"
       value="{{ user.last_name }}"
+      required
     />
     <br /><br />
-
-
-    
       
       <label for="birthday">Birthday: </label>
-      <input type="date" id="birthday" name="birthday" value="{{ user.birthday|date:"Y-m-d"}}"/>
+      <input type="date" id="birthday" name="birthday" value="{{ user.birthday|date:"Y-m-d"}}" required/>
       <br /><br />
 
-      <label for="height">Height(cm): </label>
-      <input type="text" id="height" name="height" value="{{ user.height }}" />
+      <label for="height">Height(in): </label>
+      <input type="number" id="height" name="height" value="{{ user.height }}" required/>
       <br /><br />
 
-      <label for="weight">Weight(kg): </label>
-      <input type="text" id="weight" name="weight" value="{{ user.weight }}" />
+      <label for="weight">Weight(lbs): </label>
+      <input type="number" id="weight" name="weight" value="{{ user.weight }}" required/>
       <br /><br />
 
       <label for="gender">Gender: </label>
@@ -100,7 +109,7 @@
     <br /><br />
 
     <label for="stage">What Stage Are You? </label>
-    <input type="text" id="stage" name="stage" value="{{ user.stage }}" />
+    <input type="text" id="stage" name="stage" value="{{ user.stage }}" required/>
     <br /><br />
 
     <button type="submit">Update</button>
