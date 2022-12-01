@@ -111,18 +111,14 @@ def LogoutView(request) :
 
 
 def homePageView(request) :
-    logged_in = False
     email = request.session['email']
     if (email) :
-        logged_in = True
         data = User.objects.get(email=email)
     else :
         data = None
-
-    # passing that user object's data to a dictionary so we can pass that to the page
     context = {
         "user" : data,
-        "logged_in" : logged_in
+        "logged_in" : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/home.html', context)
@@ -130,7 +126,6 @@ def homePageView(request) :
 
 def aboutPageView(request) :
     email = request.session['email']
-    logged_in = True
     data = User.objects.get(email=email)
 
     context = {
