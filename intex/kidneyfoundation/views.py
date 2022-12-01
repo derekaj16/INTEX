@@ -49,6 +49,8 @@ def addUserPageView(request) :
         user.creatinine_level = request.POST[ 'creatinine_level' ]
         user.albumin_level = request.POST[ 'albumin_level' ]
         user.blood_sugar_level = request.POST[ 'blood_sugar_level' ]
+        user.blood_pressure = request.POST[ 'blood_pressure' ]
+        user.diabetes = request.POST[ 'diabetes' ]
         
         user.save()
 
@@ -473,6 +475,8 @@ def updateUserInfoView(request) :
         # user.date_signed_up = request.POST[ 'date_signed_up' ]
         user.on_dialysis = request.POST[ 'on_dialysis' ]
         user.stage = request.POST[ 'stage' ]
+        user.blood_pressure = request.POST[ 'blood_pressure' ]
+        user.diabetes = request.POST[ 'diabetes' ]
         
         user.save()
 
