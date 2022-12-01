@@ -25,6 +25,8 @@
             <input type="text" id="fat_value" name="fat_value" style="display: none;">
             <input type="text" id="carbs_value" name="carbs_value" style="display: none;">
             <input type="text" id="calories" name="calories" style="display: none;">
+            <input type="text" id="date" name="date" value="{{ date }}" style="display: none;">
+            <input type="text" id="time" name="time" style="display: none;">
 
             <b><p id="food-name"></p></b>
               
@@ -69,33 +71,99 @@
         <div class="row">
             <div class="col-md-8">
                 <div>
-                    <h2>November 28, 2022</h2>
+                    <div class="date-header">
+                        <a href="{% url 'changeDate' date=date forward=False %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                            </svg>
+                        </a>
+                        <h2>{{ date }}</h2>
+                        <a href="{% url 'changeDate' date=date forward=True %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                            </svg>
+                        </a>
+                    </div>
                     
-                    <h4>Breakfast</h4>
-                    {% for food in breakfast %}
-                    <p>{{ food.fdcId.food_name | title }}</p>
-                    {% endfor %}
+                    <div class="diary-content">     
+                        <h4>Breakfast</h4>
+                        {% if breakfast %}
+                            {% for food in breakfast %}
+                            <div class="meal-item">
+                                <p>{{ food.fdcId.food_name | title }}</p>
+                                <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                    <div class="trash-container"> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg>
+                                    </div>  
+                                </a>  
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
 
-                    <h4>Lunch</h4>
-                    {% for food in lunch %}
-                    <p>{{ food.fdcId.food_name | title }}</p>
-                    {% endfor %}
+                        <h4>Lunch</h4>
+                        {% if lunch %}
+                            {% for food in lunch %}
+                            <div class="meal-item">
+                                <p>{{ food.fdcId.food_name | title }}</p>
+                                <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                    <div class="trash-container"> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg>
+                                    </div>  
+                                </a>  
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="none"><i>No food yetl</i></div>
+                        {% endif %}
 
-                    <h4>Dinner</h4>
-                    {% for food in dinner %}
-                    <p>{{ food.fdcId.food_name | title }}</p>
-                    {% endfor %}
+                        <h4>Dinner</h4>
+                        {% if dinner %}
+                            {% for food in dinner %}
+                            <div class="meal-item">
+                                <p>{{ food.fdcId.food_name | title }}</p>
+                                <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                    <div class="trash-container"> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg>
+                                    </div>  
+                                </a>  
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
 
-                    <h4>Snack</h4>
-                    {% for food in snacks %}
-                    <p>{{ food.fdcId.food_name | title }}</p>
-                    {% endfor %} 
+                        <h4>Snacks</h4>
+                        {% if snacks %}
+                            {% for food in snacks %}
+                            <div class="meal-item">
+                                <p>{{ food.fdcId.food_name | title }}</p>
+                                <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                    <div class="trash-container"> 
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                            </svg>
+                                    </div>  
+                                </a>  
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="row">
                     <div class="col-md-12 mx-auto">
-                        <form class="searchbar" action="{% url 'find' %}" method="POST">
+                        <form class="searchbar" action="{% url 'find' date=date %}" method="POST">
                             {% csrf_token %}
                             <input type="text" id="search" name="search" placeholder="Add a food">
                         </form>

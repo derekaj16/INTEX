@@ -129,3 +129,59 @@ form.searchbar input#search:focus {
     display: flex;
     align-items: center;
 }
+
+.meal-item {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 10px 15px;
+    border: 2px solid #eee;
+    border-radius: 5px;
+    margin: 5px 0
+}
+.meal-item .trash-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.meal-item .trash-container:hover {
+    background-color: rgb(255, 228, 233);
+}
+.meal-item .trash {
+    color: white;
+}
+.meal-item:hover .trash {
+    color: var(--bs-danger);
+}
+
+.meal-item p {
+    margin: 0 75px 0 0;
+}
+
+.none {
+    opacity: .6;
+}
+
+h4:first-child {
+    margin-top: 0;
+}
+h4 {
+    margin-top: 30px;
+}
+
+.date-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.date-header svg {
+    transform: scale(2);
+}
+.diary-content {
+    padding: 75px;
+}
