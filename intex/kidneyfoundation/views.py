@@ -141,7 +141,7 @@ def aboutPageView(request) :
 
 def dashboardPageView(request) :
     email = request.session['email']
-    userdata = User.objects.get(email=email)
+    user = User.objects.get(email=email)
 
     # getting all the records from the entry table
     entrydata_all = Entry.objects.select_related('fdcId').filter(email=email)
@@ -232,22 +232,37 @@ def dashboardPageView(request) :
         todays_na_intake = na_data[0]
         todays_phos_intake = phos_data[0]
         
+    if user.on_dialysis :
+        recommended_k = 2000
+        recommended_na = (750 + 2000) / 2 # the middle number (optimal) between 750-2000
+        recommended_phos = (800 + 1000) / 2 # the middle number (optimal) between 800-1000
 
+    elif user.stage in (3,4): 
+        recommended_k = (2500 + 3000) / 2 # the middle number (optimal) between 2500-3000
+        recommended_na = (1495 + 2300) / 2 # the middle number (optimal) between 1495-2300
+        recommended_phos = (800 + 1000) / 2 # the middle number (optimal) between 800-1000
+    else :
+        recommended_k = 3500
+        recommended_na = 2300
+        recommended_phos = 3000
 
+    todays_k_percent = (todays_k_intake / recommended_k) * 100
+    todays_na_percent = (todays_na_intake / recommended_na) * 100
+    todays_phos_percent = (todays_phos_intake / recommended_phos) * 100
+
+    # reversing the lists so that the dashboard shows the days in chronological order (not backwards chronological which would have today on the left)
     k_data.reverse()
     na_data.reverse()
     phos_data.reverse()
-
-    print('Length: ' +  str(len(k_data)))
     
     context = {
-        "user" : userdata,
+        "user" : user,
         "past_week_entries": rolling_week_entries,
         "days_of_week": days_of_week,
         'logged_in' : loggedIn(request),
-        "todays_k_intake": todays_k_intake,
-        "todays_na_intake": todays_na_intake,
-        "todays_phos_intake": todays_phos_intake,
+        "todays_k_percent": todays_k_percent,
+        "todays_na_percent": todays_na_percent,
+        "todays_phos_percent": todays_phos_percent,
         'k_data' : k_data,
         'na_data' : na_data,
         'phos_data' : phos_data

@@ -7,7 +7,8 @@
             datasets: [
             {
                 label: 'Micronutrient Levels',
-                data: [{{ todays_k_intake }}, {{ todays_na_intake }}, {{ todays_phos_intake }}],
+
+                data: [{{ todays_k_percent }}, {{ todays_na_percent }}, {{ todays_phos_percent }}],
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.8)',
                     'rgba(54, 162, 235, 0.8)',
@@ -21,7 +22,7 @@
                 borderWidth: 1,
                 barPercentage: .75,
                 categoryPercentage: .9
-            }]
+            },]
         },
         options: {
             indexAxis: 'y',
@@ -30,16 +31,13 @@
                     beginAtZero: true
                 },
                 x: {
+                    min: 0,
+                    max: 100,
+
                     title: {
                         display: true,
-                        text: "Daily Levels (mg)"
+                        text: "% of Recommended Daily Intake"
                     },
-                    // ticks: {
-                    //    // Include a dollar sign in the ticks
-                    //    callback: function(value, index, ticks) {
-                    //        return value + " mg";
-                    //    }
-                    //},
                 }
             }
         }
