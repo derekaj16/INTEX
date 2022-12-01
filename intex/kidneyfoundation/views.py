@@ -154,7 +154,7 @@ def dashboardPageView(request) :
         6: [], # 6 days ago
         7: [], # 1 full week ago (if today is Wendesday, this is last Wednesday)
     }
-    
+
     # For every entry record in the Entry table
     for entry in entrydata_all :
         # if the current entry's date is within the previous week
@@ -185,9 +185,10 @@ def dashboardPageView(request) :
 
     for day in rolling_week_entries :
         for entry in rolling_week_entries[day] :
-            k_data.append(entry.k_intake)
-            na_data.append(entry.na_intake)
-            phos_data.append(entry.phos_intake)
+            
+            k_data.append(int(entry.k_intake))
+            na_data.append(int(entry.na_intake))
+            phos_data.append(int(entry.phos_intake))
 
     context = {
         "user" : userdata,

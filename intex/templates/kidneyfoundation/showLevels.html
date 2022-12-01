@@ -26,6 +26,7 @@
       color: darkmagenta;
       background: lightpink;
       border: 1px solid darkred;
+      font-size: 9pt
     }
      
     /* (B3) SUCCESS */
@@ -39,7 +40,7 @@
 <br><br><br><br>
 
 <div class='container'>
-    <h1><b>Nice to Have You.</b></h1>
+    <h1 class="text-center pb-3"><b>Serum Levels</b></h1>
         <p><b>K Level:</b> {{user.k_level}}</p>
         {% if user.k_level < 3.6 %}
             <div class="box warn">
@@ -167,7 +168,9 @@
             </div>
         {% endif %}
 
-        <a class='btn btn-primary' href="{% url 'editLevels' %}">Update Levels</a>
+        <center>
+        <a class='btn btn-success mt-3' href="{% url 'editLevels' %}">Update Levels</a>
+        </center>
 
         {% comment %} <a class='btn btn-primary' href="{% url 'home' email=user.email %}">Test Home Page Param</a> {% endcomment %}
 </div>
