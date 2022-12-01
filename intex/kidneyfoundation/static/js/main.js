@@ -56,7 +56,23 @@ function titleCase(str) {
  return str.join(' '); 
 };
 
+const togglePassword = document.querySelector('#togglePassword');
+const password = document.querySelector('#id_password');
 
+let visible = false;
+
+function toggleEye(e) {
+
+  if (visible) {
+    document.getElementById('password').setAttribute('type', 'password');
+  }
+  else {
+    document.getElementById('password').setAttribute('type', 'text');
+  }
+// toggle the type attribute
+
+visible = !visible;
+}
 // let edit = false;
 
 // function toggleTrash(t) {

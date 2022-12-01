@@ -10,8 +10,8 @@ from decimal import Decimal
 
 
 # feet/inches to centimeters Function
-def heightToCm(feet, inches) :
-    cm = ((float(feet) * 12) + float(inches)) * 2.54
+def heightToInches(feet, inches) :
+    cm = (float(feet) * 12) + float(inches)
     return round(cm, 2)
 
 # Pounds to Kilograms Function
@@ -37,8 +37,8 @@ def addUserPageView(request) :
         user.first_name = request.POST[ 'first_name' ]
         user.last_name = request.POST[ 'last_name' ]
         user.birthday = request.POST[ 'birthday' ]
-        user.height = heightToCm(request.POST[ 'feet' ], request.POST['inches'])
-        user.weight = lbsToKg(request.POST[ 'weight' ])
+        user.height = heightToInches(request.POST[ 'feet' ], request.POST['inches'])
+        user.weight = request.POST[ 'weight' ]
         user.gender = request.POST[ 'gender' ]
         user.date_signed_up = datetime.now()
         user.on_dialysis = request.POST[ 'on_dialysis' ]

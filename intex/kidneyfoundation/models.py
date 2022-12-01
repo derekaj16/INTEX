@@ -84,7 +84,7 @@ class User(models.Model) :
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     birthday = models.DateField()
-    height = models.FloatField()
+    height = models.IntegerField()
     weight = models.FloatField()
     gender = models.CharField(max_length=1, choices=GENDER)
     on_dialysis = models.BooleanField(default=True)
