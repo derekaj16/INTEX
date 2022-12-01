@@ -8,7 +8,7 @@
             datasets: [{
                 //ONLY K LEVELS IN HERE (one for each day of the week)
                 label: 'K Level',
-                data: [{% for day in past_week_entries %} '{{ past_week_entries[day].k_intake }}', {% endfor %}],
+                data: {{ k_data }},
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.8)',
                 ],
@@ -20,7 +20,7 @@
             {
                 //ONLY Na LEVELS IN HERE (one for each day of the week)
                 label: 'Na Level',
-                data: [{% for day in past_week_entries %} '{{ past_week_entries[day].na_intake }}', {% endfor %}],
+                data: {{ na_data }},
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.8)',
                 ],
@@ -32,7 +32,7 @@
             {
                 //ONLY Phos LEVELS IN HERE (one for each day of the week)
                 label: 'Phos Level',
-                data: [{% for day in past_week_entries %} '{{ past_week_entries[day].phos_intake }}', {% endfor %}],
+                data: {{ phos_data }},
                 backgroundColor: [
                     'rgba(255, 206, 86, 0.8)'
                 ],

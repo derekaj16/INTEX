@@ -5,7 +5,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import * # need to make model for this
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from decimal import Decimal
 
 
@@ -111,14 +111,19 @@ def LogoutView(request) :
 
 
 def homePageView(request) :
-    email = request.session['email']
-    if (email) :
+    if 'email' in request.session :
+        email = request.session['email']
         data = User.objects.get(email=email)
+        logged_in = loggedIn(request)
     else :
+        email = ''
         data = None
+        logged_in = False
+
+
     context = {
         "user" : data,
-        "logged_in" : loggedIn(request)
+        "logged_in" : logged_in
     }
     return render(request, 'kidneyfoundation/home.html', context)
 
@@ -139,10 +144,9 @@ def dashboardPageView(request) :
     userdata = User.objects.get(email=email)
 
     # getting all the records from the entry table
-    entrydata_all = Entry.objects.get(email=email)
+    entrydata_all = Entry.objects.filter(email=email)
 
-    dt = datetime.now()
-    today = datetime.today()
+    today = date.today()
     a_week_ago = today - timedelta(days=7)
 
     rolling_week_entries = {
@@ -155,15 +159,15 @@ def dashboardPageView(request) :
         6: [], # 6 days ago
         7: [], # 1 full week ago (if today is Wendesday, this is last Wednesday)
     }
-    
+
     # For every entry record in the Entry table
     for entry in entrydata_all :
         # if the current entry's date is within the previous week
         if entry.date >= a_week_ago and entry.date <= today :
             # Find out how many days ago that entry was
-            days_ago = timedelta(today) - timedelta(entry.date)
+            days_ago = (today - entry.date)
             # Adding the entry object to the key that corresponds with how many days ago that entry was
-            rolling_week_entries[days_ago].append(entry)
+            rolling_week_entries[days_ago.days].append(entry)
 
     # Creating a list to hold all of the days of the week over the past rolling week
     days_of_week = []
@@ -171,20 +175,34 @@ def dashboardPageView(request) :
     # For each day (key) in the rolling_week_entries table
     for day_number in rolling_week_entries:
         # get the number of days before the current day
-        entry_day_of_week_date = rolling_week_entries[day_number][0].date
+        if len(rolling_week_entries[day_number]) > 0 :
+            entry_day_of_week_date = rolling_week_entries[day_number][0].date
 
         # get the day of the week of the entries of the day ago thing
-        day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
+            day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
 
         # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
-        days_of_week.append(day_of_week_name)
+            days_of_week.append(day_of_week_name)
 
+    k_data = []
+    na_data = []
+    phos_data = []
+
+    for day in rolling_week_entries :
+        for entry in rolling_week_entries[day] :
+            
+            k_data.append(int(entry.k_intake))
+            na_data.append(int(entry.na_intake))
+            phos_data.append(int(entry.phos_intake))
 
     context = {
         "user" : userdata,
         "past_week_entries": rolling_week_entries,
         "days_of_week": days_of_week,
-        'logged_in' : loggedIn(request)
+        'logged_in' : loggedIn(request),
+        'k_data' : k_data,
+        'na_data' : na_data,
+        'phos_data' : phos_data
     }
 
     return render(request, 'kidneyfoundation/dashboard.html', context)
@@ -212,32 +230,50 @@ def loggedIn(request) :
     
     return logged_in
 
-def diaryPageView(request, data=None, status=0, fdcId=0) :
+def diaryPageView(request, data=None, status=0, date=date.today()) :
     
     context = {
         'foods' : data,
         'status' : status,
+        'date' : date,
         'nutrientIds' : [1093, 1003, 1092, 1091],
-        'breakfast' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='B'),
-        'lunch' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='L'),
-        'dinner' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='D'),
-        'snacks' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='S'),
+        'breakfast' : Entry.objects.select_related('fdcId', 'email').filter(email=request.session['email'], meal_type='B', date=date),
+        'lunch' : Entry.objects.select_related('fdcId', 'email').filter(email=request.session['email'], meal_type='L', date=date),
+        'dinner' : Entry.objects.select_related('fdcId', 'email').filter(email=request.session['email'], meal_type='D', date=date),
+        'snacks' : Entry.objects.select_related('fdcId', 'email').filter(email=request.session['email'], meal_type='S', date=date),
         'logged_in' : loggedIn(request)
 
     }
     return render(request, 'kidneyfoundation/diary.html', context)
 
+def changeDate(request, date, forward) :
+    newDate = datetime.strptime(date, '%Y-%m-%d')
+    if forward == 'True' :
+        newDate = newDate + timedelta(days=1)
+    else :
+        newDate = newDate - timedelta(days=1)
 
-def findFood(request) :
+    return diaryPageView(request, date=newDate.date())
+
+def findFood(request, date) :
+    newDate = datetime.strptime(date, '%Y-%m-%d')
     if request.method == 'POST' :
         r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
         if r.status_code == 200 :
             json_data = json.loads(r.content)
-            return diaryPageView(request, json_data['foods'], r.status_code)
+            return diaryPageView(request, json_data['foods'], r.status_code, date=newDate.date())
 
 
 def addFoodView(request) :
     if request.method == 'POST' :
+        user = User.objects.get(email=request.session['email']) # Get user info
+        entry = Entry() # Create entry
+        entry.email = user
+        date = request.POST['date']
+        newDate = datetime.strptime(date, '%b. %d, %Y')
+        entry.date = newDate
+        entry.time = request.POST['time'] 
+
         # Declare variables
         k_value = request.POST['k_value']
         na_value = request.POST['na_value']
@@ -247,83 +283,83 @@ def addFoodView(request) :
         carbs_value = request.POST['carbs_value']
         calories = request.POST['calories']
         serving_size = request.POST['serving_size']
+        servings = request.POST['servings']
 
-        # Get user info
-        user = User.objects.get(email=request.session['email'])
-
-        # Create food and entry object
-        food = Food()
-        entry = Entry()
-
-        # Basic object info
-        food.fdcId = request.POST['fdcId']
-        food.food_name = request.POST['food_name']
+        existingFood = Food.objects.filter(fdcId=request.POST['fdcId'])
+        entry.num_servings = servings
         entry.meal_type = request.POST['meal']
-        entry.num_servings = request.POST['servings']
-        entry.email = user
-        entry.fdcId = food
-
-        # Serving size and micronutrients
-        if (serving_size) :
-            food.serving_size = serving_size
-            food.serving_size_unit = request.POST['serving_size_unit']
-        else :
-            food.serving_size = 0.0
-            food.serving_size_unit = None
-
-        if (k_value) :
-            food.k_value = k_value
-            entry.k_intake = k_value
-        else :
-            food.k_value = 0.0
-            entry.k_intake = 0.0
         
-        if (na_value) :
-            food.na_value = na_value
-            entry.na_intake = na_value
-        else :
-            food.na_value = 0.0
-            entry.na_intake = 0.0
+        if  len(existingFood) > 0 : # Check if food is already inside database
+            food = Food.objects.get(fdcId=request.POST['fdcId'])
+            entry.fdcId = food
 
-        if (phos_value) :
-            food.phos_value = phos_value
-            entry.phos_intake = phos_value
         else :
-            food.phos_value = 0.0
-            entry.phos_intake = 0.0
+            # Create food and entry object
+            food = Food()
 
-        if (protien_value) :
-            food.protien_value = protien_value
-            entry.protein_intake = protien_value
-        else :
-            food.protien_value = 0.0
-            entry.protein_intake = 0.0
+            # Basic object info
+            food.fdcId = request.POST['fdcId']
+            food.food_name = request.POST['food_name']
+            entry.fdcId = food
 
-        if (fat_value) :
-            food.fat_value = fat_value
-            entry.fat_intake = fat_value
-        else :
-            food.fat_value = 0.0
-            entry.fat_intake = 0.0
+            # Serving size and micronutrients
+            if (serving_size) :
+                food.serving_size = serving_size
+                food.serving_size_unit = request.POST['serving_size_unit']
+            else :
+                food.serving_size = 0.0
+                food.serving_size_unit = None
 
-        if (carbs_value) :
-            food.carbs_value = carbs_value
-            entry.carb_intake = carbs_value
-        else :
-            food.carbs_value = 0.0
-            entry.carb_intake = 0.0
+            if (k_value) :
+                food.k_value = float(k_value) * float(servings)
+            else :
+                food.k_value = 0.0
+            
+            if (na_value) :
+                food.na_value = float(na_value) * float(servings)
+            else :
+                food.na_value = 0.0
 
-        if (calories) :
-            food.calories = calories
-        else :
-            food.calories = 0.0
+            if (phos_value) :
+                food.phos_value = float(phos_value) * float(servings)
+            else :
+                food.phos_value = 0.0
 
-        # Save data
-        food.save()
+            if (protien_value) :
+                food.protien_value = float(protien_value) * float(servings)
+            else :
+                food.protien_value = 0.0
+
+            if (fat_value) :
+                food.fat_value = float(fat_value) * float(servings)
+            else :
+                food.fat_value = 0.0
+
+            if (carbs_value) :
+                food.carbs_value = float(carbs_value) * float(servings)
+            else :
+                food.carbs_value = 0.0
+
+            if (calories) :
+                food.calories = float(calories) * float(servings)
+            else :
+                food.calories = 0.0
+
+            # Save data
+            food.save()
+        
         entry.save()
 
-    return diaryPageView(request)
+    return diaryPageView(request, date=newDate.date())
 
+def deleteFood(request, fdcId, email, date, time) :
+    entry = Entry.objects.get(fdcId=fdcId, date=date, email=email, time=time)
+    entry.delete()
+
+    newDate = datetime.strptime(date, '%Y-%m-%d')
+
+
+    return diaryPageView(request, date=newDate.date())
 
 def showUserPageView(request) :
     data = User.objects.get(email=request.session['email'])
