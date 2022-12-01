@@ -6,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import * # need to make model for this
 from datetime import datetime, timedelta
+from decimal import Decimal
+
 
 # feet/inches to centimeters Function
 def heightToCm(feet, inches) :
@@ -30,7 +32,6 @@ def indexPageView(request, error=False) :
 def addUserPageView(request) :
     if request.method == 'POST' :
         user = User()
-
         user.email = request.POST[ 'email' ]
         user.password = request.POST['password']
         user.first_name = request.POST[ 'first_name' ]
@@ -77,7 +78,7 @@ def LoginView(request) :
                 # email = request.session.get('email', 'davemurdock55@gmail.com')
                 
                 # Then go and render the homepage, passing the session variable as the value for the email key in a nameless dictionary
-                return redirect('home')
+                return homePageView(request)
             else :
                 isError = True
 
@@ -110,26 +111,31 @@ def LogoutView(request) :
 
 
 def homePageView(request) :
-
-    # getting the current user's email from session storage
+    logged_in = False
     email = request.session['email']
-
-    # getting the object that has that email
-    data = User.objects.get(email=email)
+    if (email) :
+        logged_in = True
+        data = User.objects.get(email=email)
+    else :
+        data = None
 
     # passing that user object's data to a dictionary so we can pass that to the page
     context = {
-        "user" : data
+        "user" : data,
+        "logged_in" : logged_in
     }
+
     return render(request, 'kidneyfoundation/home.html', context)
 
 
 def aboutPageView(request) :
     email = request.session['email']
+    logged_in = True
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     return render(request, 'kidneyfoundation/about.html', context)
 
@@ -184,6 +190,7 @@ def dashboardPageView(request) :
         "user" : userdata,
         "past_week_entries": rolling_week_entries,
         "days_of_week": days_of_week,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/dashboard.html', context)
@@ -198,19 +205,31 @@ def suggestPageView(request, data=None) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     return render(request, 'kidneyfoundation/suggest.html', context)
 
+def loggedIn(request) :
+    logged_in = False
+    email = request.session['email']
+    if (email) :
+        logged_in = True
+    
+    return logged_in
 
-def diaryPageView(request, data=None, status=0) :
-    breakfast = 'hello'
-
+def diaryPageView(request, data=None, status=0, fdcId=0) :
+    
     context = {
         'foods' : data,
         'status' : status,
         'nutrientIds' : [1093, 1003, 1092, 1091],
-        'breakfast': breakfast
+        'breakfast' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='B'),
+        'lunch' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='L'),
+        'dinner' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='D'),
+        'snacks' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='S'),
+        'logged_in' : loggedIn(request)
+
     }
     return render(request, 'kidneyfoundation/diary.html', context)
 
@@ -224,15 +243,100 @@ def findFood(request) :
 
 
 def addFoodView(request) :
+    if request.method == 'POST' :
+        # Declare variables
+        k_value = request.POST['k_value']
+        na_value = request.POST['na_value']
+        phos_value = request.POST['phos_value']
+        protien_value = request.POST['protein_value']
+        fat_value = request.POST['fat_value']
+        carbs_value = request.POST['carbs_value']
+        calories = request.POST['calories']
+        serving_size = request.POST['serving_size']
+
+        # Get user info
+        user = User.objects.get(email=request.session['email'])
+
+        # Create food and entry object
+        food = Food()
+        entry = Entry()
+
+        # Basic object info
+        food.fdcId = request.POST['fdcId']
+        food.food_name = request.POST['food_name']
+        entry.meal_type = request.POST['meal']
+        entry.num_servings = request.POST['servings']
+        entry.email = user
+        entry.fdcId = food
+
+        # Serving size and micronutrients
+        if (serving_size) :
+            food.serving_size = serving_size
+            food.serving_size_unit = request.POST['serving_size_unit']
+        else :
+            food.serving_size = 0.0
+            food.serving_size_unit = None
+
+        if (k_value) :
+            food.k_value = k_value
+            entry.k_intake = k_value
+        else :
+            food.k_value = 0.0
+            entry.k_intake = 0.0
+        
+        if (na_value) :
+            food.na_value = na_value
+            entry.na_intake = na_value
+        else :
+            food.na_value = 0.0
+            entry.na_intake = 0.0
+
+        if (phos_value) :
+            food.phos_value = phos_value
+            entry.phos_intake = phos_value
+        else :
+            food.phos_value = 0.0
+            entry.phos_intake = 0.0
+
+        if (protien_value) :
+            food.protien_value = protien_value
+            entry.protein_intake = protien_value
+        else :
+            food.protien_value = 0.0
+            entry.protein_intake = 0.0
+
+        if (fat_value) :
+            food.fat_value = fat_value
+            entry.fat_intake = fat_value
+        else :
+            food.fat_value = 0.0
+            entry.fat_intake = 0.0
+
+        if (carbs_value) :
+            food.carbs_value = carbs_value
+            entry.carb_intake = carbs_value
+        else :
+            food.carbs_value = 0.0
+            entry.carb_intake = 0.0
+
+        if (calories) :
+            food.calories = calories
+        else :
+            food.calories = 0.0
+
+        # Save data
+        food.save()
+        entry.save()
+
     return diaryPageView(request)
 
 
 def showUserPageView(request) :
-    email = request.session['email']
-    data = User.objects.get(email=email)
+    data = User.objects.get(email=request.session['email'])
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/showUser.html', context)
@@ -243,7 +347,8 @@ def editUserPageView(request):
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/editUser.html', context)
@@ -254,7 +359,8 @@ def updateUserInfoView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     if request.method == 'POST' :
@@ -284,7 +390,8 @@ def showLevelsPageView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/showLevels.html', context)
@@ -296,7 +403,8 @@ def editLevelsPageView(request):
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/editLevels.html', context)
@@ -308,7 +416,8 @@ def updateLevelsView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     
     if request.method == 'POST' :

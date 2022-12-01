@@ -12,14 +12,26 @@
 {% block content %}
 <div id="overlay">
     <div id="text">
-        <form action="{% url 'add' %}" method="POST" class="popup-form">
+        <form action="{% url 'add' %}" method="POST" class="popup-form" id="servings-form">
             {% csrf_token %}
+            <input type="text" id="fdcId" name="fdcId" style="display: none;">
+            <input type="text" id="food_name" name="food_name" style="display: none;">
+            <input type="text" id="serving_size" name="serving_size" style="display: none">
+            <input type="text" id="serving_size_unit" name="serving_size_unit" style="display: none">
+            <input type="text" id="k_value" name="k_value" style="display: none;">
+            <input type="text" id="na_value" name="na_value" style="display: none;">
+            <input type="text" id="phos_value" name="phos_value" style="display: none;">
+            <input type="text" id="protein_value" name="protein_value" style="display: none;">
+            <input type="text" id="fat_value" name="fat_value" style="display: none;">
+            <input type="text" id="carbs_value" name="carbs_value" style="display: none;">
+            <input type="text" id="calories" name="calories" style="display: none;">
+
             <b><p id="food-name"></p></b>
               
             <div class="servings-div">
                 <div>
                     <p style="margin: 0 10px 0 0;"> Servings: </p>
-                    <input type="number" name="servingSize" id="servings"required value="1" step="0.5">
+                    <input type="number" name="servings" id="servings"required value="1" step="0.5">
                 </div>
                 <div class="info">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
@@ -55,32 +67,32 @@
             <h3 class="section-subheading text-muted">What have you eaten today?</h3>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <div>
                     <h2>November 28, 2022</h2>
                     
                     <h4>Breakfast</h4>
                     {% for food in breakfast %}
-                    <p>{{ food }}</p>
+                    <p>{{ food.fdcId.food_name | title }}</p>
                     {% endfor %}
 
                     <h4>Lunch</h4>
                     {% for food in lunch %}
-                    <p>{{ food }}</p>
+                    <p>{{ food.fdcId.food_name | title }}</p>
                     {% endfor %}
 
                     <h4>Dinner</h4>
                     {% for food in dinner %}
-                    <p>{{ food }}</p>
+                    <p>{{ food.fdcId.food_name | title }}</p>
                     {% endfor %}
 
                     <h4>Snack</h4>
-                    {% for food in snack %}
-                    <p>{{ food }}</p>
-                    {% endfor %}
+                    {% for food in snacks %}
+                    <p>{{ food.fdcId.food_name | title }}</p>
+                    {% endfor %} 
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <div class="row">
                     <div class="col-md-12 mx-auto">
                         <form class="searchbar" action="{% url 'find' %}" method="POST">
