@@ -10,6 +10,18 @@
 
             <h1 class="text-center pb-3">Hi {{ user.first_name }}!</h1>
             <hr class="text-center mb-4">
+            {% if not k_data or not na_data or not phos_data %}
+            <div class="alert alert-primary" role="alert">
+                You don't have any food entries added yet! Click <a class="alert-link" href="{% url 'diary' %}">here</a> to add some.
+            </div>
+            {% elif todays_k_percent == 0 and todays_na_percent == 0 and todays_phos_percent == 0 %}
+            <div class="alert alert-primary" role="alert">
+                Looks like you haven't added any diary entries yet today. Click <a class="alert-link" href="{% url 'diary' %}">here</a> to add one! :)
+            </div>
+            {% endif %}
+            <div class="alert alert-primary" role="alert">
+                You don't have any food entries added yet. Click <a class="alert-link" href="{% url 'diary' %}">here</a> to add some!
+            </div>
         </div>
     </div>
     <div class="row">

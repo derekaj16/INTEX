@@ -5646,13 +5646,13 @@ fieldset:disabled .btn {
 }
 
 .alert-primary {
-  color: #997800;
-  background-color: #fff4cc;
-  border-color: #ffefb3;
+  color: #212529;
+  background-color: rgba(149, 219, 127, 0.75);
+  border-color: #68c04c;
 }
 
 .alert-primary .alert-link {
-  color: #7a6000;
+  color: #212529;
 }
 
 .alert-secondary {
@@ -12364,9 +12364,9 @@ p {
     padding-top: 1rem;
     padding-bottom: 1rem;
     background-color: #fff;
-    box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, .25);
-    -webkit-box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, .25);
-    -moz-box-shadow: 1px 12px 51px 4px rgba(0, 0, 0, .25);
+    box-shadow: 10px -174px 135px 103px rgba(0, 0, 0, 1);
+    -webkit-box-shadow: 10px -174px 135px 103px rgba(0, 0, 0, 1);
+    -moz-box-shadow: 10px -174px 135px 103px rgba(0, 0, 0, 1);
     transition: .2s;
   }
 
