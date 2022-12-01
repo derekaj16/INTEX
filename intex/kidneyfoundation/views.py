@@ -179,29 +179,56 @@ def dashboardPageView(request) :
         if len(rolling_week_entries[day_number]) > 0 :
             entry_day_of_week_date = rolling_week_entries[day_number][0].date
 
-        # get the day of the week of the entries of the day ago thing
+            # get the day of the week of the entries of the day ago thing
             day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
 
-        # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
+            # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
             days_of_week.append(day_of_week_name)
 
     k_data = []
     na_data = []
     phos_data = []
 
+    dayK_intake = 0
+    dayNa_intake = 0
+    dayPhos_intake = 0
 
+
+    # for each day in the rolling_week_entries dictionary
     for day in rolling_week_entries :
+        # for each entry in that day
         for entry in rolling_week_entries[day] :
+            # getting the intake for each nutrient by mutliplying the nutrient's value for the food in the entry by the number of servings
+            entryK_intake = int(entry.fdcId.k_value * entry.num_servings)
+            entryNa_intake = int(entry.fdcId.na_value * entry.num_servings)
+            entryPhos_intake = int(entry.fdcId.phos_value * entry.num_servings)
             
-            k_data.append(int(entry.num_servings * entry.fdcId.k_value))
-            na_data.append(int(entry.num_servings * entry.fdcId.na_value))
-            phos_data.append(int(entry.num_servings * entry.fdcId.phos_value))
+            # adding the entry's intake to the total intake of that nutrient for that day
+            dayK_intake += entryK_intake
+            dayNa_intake += entryNa_intake
+            dayPhos_intake += entryPhos_intake
+
+            # add the intake (# servings * nutrient amount) for each nutrient for that day to the list corresponding with that nutrient
+            k_data.append(dayK_intake)
+            na_data.append(dayNa_intake)
+            phos_data.append(dayPhos_intake)
+
+
+            # if it's today's entry
+            if entry.date == today :
+                todays_k_intake = dayK_intake
+                todays_na_intake = dayNa_intake
+                todays_phos_intake = dayPhos_intake
+
 
     context = {
         "user" : userdata,
         "past_week_entries": rolling_week_entries,
         "days_of_week": days_of_week,
         'logged_in' : loggedIn(request),
+        "todays_k_intake": todays_k_intake,
+        "todays_na_intake": todays_na_intake,
+        "todays_phos_intake": todays_phos_intake,
         'k_data' : k_data,
         'na_data' : na_data,
         'phos_data' : phos_data
