@@ -77,7 +77,7 @@ def LoginView(request) :
                 # email = request.session.get('email', 'davemurdock55@gmail.com')
                 
                 # Then go and render the homepage, passing the session variable as the value for the email key in a nameless dictionary
-                return redirect('home')
+                return homePageView(request)
             else :
                 isError = True
 
@@ -110,26 +110,31 @@ def LogoutView(request) :
 
 
 def homePageView(request) :
-
-    # getting the current user's email from session storage
+    logged_in = False
     email = request.session['email']
-
-    # getting the object that has that email
-    data = User.objects.get(email=email)
+    if (email) :
+        logged_in = True
+        data = User.objects.get(email=email)
+    else :
+        data = None
 
     # passing that user object's data to a dictionary so we can pass that to the page
     context = {
-        "user" : data
+        "user" : data,
+        "logged_in" : logged_in
     }
+
     return render(request, 'kidneyfoundation/home.html', context)
 
 
 def aboutPageView(request) :
     email = request.session['email']
+    logged_in = True
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     return render(request, 'kidneyfoundation/about.html', context)
 
@@ -139,7 +144,8 @@ def dashboardPageView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     return render(request, 'kidneyfoundation/dashboard.html', context)
 
@@ -152,10 +158,18 @@ def suggestPageView(request, data=None) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     return render(request, 'kidneyfoundation/suggest.html', context)
 
+def loggedIn(request) :
+    logged_in = False
+    email = request.session['email']
+    if (email) :
+        logged_in = True
+    
+    return logged_in
 
 def diaryPageView(request, data=None, status=0) :
     breakfast = 'hello'
@@ -164,7 +178,8 @@ def diaryPageView(request, data=None, status=0) :
         'foods' : data,
         'status' : status,
         'nutrientIds' : [1093, 1003, 1092, 1091],
-        'breakfast': breakfast
+        'breakfast': breakfast,
+        'logged_in' : loggedIn(request)
     }
     return render(request, 'kidneyfoundation/diary.html', context)
 
@@ -183,7 +198,8 @@ def showUserPageView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/showUser.html', context)
@@ -195,7 +211,8 @@ def editUserPageView(request):
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/editUser.html', context)
@@ -205,7 +222,8 @@ def updateUserInfoView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     if request.method == 'POST' :
@@ -234,7 +252,8 @@ def showLevelsPageView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/showLevels.html', context)
@@ -246,7 +265,8 @@ def editLevelsPageView(request):
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
 
     return render(request, 'kidneyfoundation/editLevels.html', context)
@@ -258,7 +278,8 @@ def updateLevelsView(request) :
     data = User.objects.get(email=email)
 
     context = {
-        "user" : data
+        "user" : data,
+        'logged_in' : loggedIn(request)
     }
     
     if request.method == 'POST' :

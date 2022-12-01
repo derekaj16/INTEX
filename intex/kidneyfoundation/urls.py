@@ -16,11 +16,11 @@ urlpatterns = [
     path('add', addFoodView, name='add'),
     path('levels/<str:email>', showLevelsPageView, name='showLevels'),
     path('editLevels/<str:email>', editLevelsPageView, name='editLevels'),
-    path('home/', homePageView, name='home'),
+    path('', homePageView, name='home'),
     path('levels/', showLevelsPageView, name='showLevels'),
     path('editLevels/', editLevelsPageView, name='editLevels'),
     path("updateLevels/", updateLevelsView, name='updateLevels'),
     path('login', LoginView, name='login'),
     path('logout', LogoutView, name='logout'),
-    path('', indexPageView, name='index'),
+    path('index', indexPageView, name='index'),
 ]
