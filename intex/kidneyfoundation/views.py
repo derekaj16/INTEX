@@ -120,7 +120,6 @@ def homePageView(request) :
         "user" : data,
         "logged_in" : loggedIn(request)
     }
-
     return render(request, 'kidneyfoundation/home.html', context)
 
 
