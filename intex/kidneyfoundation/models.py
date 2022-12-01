@@ -88,6 +88,8 @@ class User(models.Model) :
     weight = models.FloatField()
     gender = models.CharField(max_length=1, choices=GENDER)
     on_dialysis = models.BooleanField(default=True)
+    diabetes = models.BooleanField(default=False)
+    blood_pressure = models.BooleanField(default=False)
     stage = models.IntegerField(choices=STAGE)
     date_signed_up = models.DateField(default=datetime.today)
     user_condition = models.ManyToManyField(Comorbidity, through='Condition')
