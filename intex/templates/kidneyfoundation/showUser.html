@@ -3,10 +3,12 @@
 {% block title %}Account Info{% endblock %}
 
 {% block content %}
-<h1 style="padding: 100px 0px 0px 10px" class='text-center'><b>Nice to Have You.</b></h1>
+
 <center>
-<div class='container'>
-    <p>
+<div class='container border-none shadow pt-3' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 10px 0px">
+    <h1 style="padding-bottom: 10px" class='text-center'><b>Nice to Have You.</b></h1>
+    
+    <p class="text-center">
         <p><b>Email:</b> {{user.email}}</p>
         <p><b>First Name:</b> {{user.first_name}}</p>
         <p><b>Last Name:</b> {{user.last_name}}</p>

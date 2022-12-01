@@ -4,14 +4,11 @@
 {% block title %}Edit Account Info{% endblock %}
 
 {% block content %}
-
-<div class="container">
-  <div class="text-left">
-    <br /><br /><br /><br />
-    <h2 style="style:padding-left:10px;" class="section-heading text-uppercase">
+<center>
+<div class='container border-none shadow pt-3' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 20px 0px">
+    <h2 style="padding: 10px 0px 10px 0px;" class="section-heading text-uppercase text-center">
       Edit Your Information:
     </h2>
-  </div>
   <br />
   <form name="form" method="post" action="{% url 'updateUser' %}">
     {% csrf_token %}
@@ -112,7 +109,8 @@
     <input type="text" id="stage" name="stage" value="{{ user.stage }}" required/>
     <br /><br />
 
-    <button type="submit">Update</button>
+    <button class='btn btn-primary' type="submit">Update</button>
   </form>
 </div>
+</center>
 {% endblock %}
