@@ -7,7 +7,10 @@ function addToList(food) {
     document.getElementById('serving-size').innerHTML = 1;
   }
 
+  var today = new Date();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + '.' + today.getMilliseconds();
   // Filling hidden fields
+  document.getElementById('time').value = time;
   document.getElementById('fdcId').value = food['fdcId']
   document.getElementById('food_name').value = food['description']
   if (food['servingSize']) { // Check if serving size is an attribute in the database
@@ -39,15 +42,11 @@ function addToList(food) {
     }
   };
   
-}
+};
 
 function hidePopUp() {
   document.getElementById('overlay').style.display = 'none';
-}
-
-function getList() {
-  return foodList
-}
+};
 
 function titleCase(str) {
   str = str.toLowerCase().split(' ').map(function(word) {
@@ -55,4 +54,27 @@ function titleCase(str) {
   });
 
  return str.join(' '); 
-}
+};
+
+
+// let edit = false;
+
+// function toggleTrash(t) {
+//   let str = t;
+//   let btns = document.getElementsByClassName('trash');
+
+//   // Toggle edit value
+//   edit = !edit;
+
+//   if (edit) {
+//     for (let i = 0; i < btns.length; i++) {
+//       btns[i].style.display = 'block';
+//     }
+//   }
+//   else {
+//     for (let i = 0; i < btns.length; i++) {
+//       btns[i].style.display = 'none';
+//     }
+//   }
+  
+// };

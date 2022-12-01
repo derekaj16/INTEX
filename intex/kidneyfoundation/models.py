@@ -45,7 +45,8 @@ class Entry(models.Model) :
         ('S', 'Snack')
     )
     entry_id = models.AutoField(primary_key=True)
-    date = models.DateField(default=datetime.now)
+    date = models.DateField(default=datetime.today)
+    time = models.TimeField(default=datetime.today().time())
     meal_type = models.CharField(max_length=1, choices=MEAL_TYPE)
     num_servings = models.DecimalField(max_digits=7, decimal_places=2)
     email = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, db_column='email')
@@ -66,7 +67,7 @@ class Entry(models.Model) :
 
     class Meta :
         db_table = 'entry'
-        unique_together = (('email', 'fdcId'))
+        unique_together = (('email', 'fdcId', 'date', 'time'))
 
     def __str__(self) :
         return self.date
