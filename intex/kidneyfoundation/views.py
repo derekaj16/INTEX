@@ -86,7 +86,7 @@ def LoginView(request) :
 
 def LogoutView(request) :
     request.session['email'] = None
-    return render(request, 'kidneyfoundation/index.html')
+    return render(request, 'kidneyfoundation/home.html')
 
 # def signInPageView(request) :
 
