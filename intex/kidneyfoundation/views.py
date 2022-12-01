@@ -138,35 +138,52 @@ def dashboardPageView(request) :
     email = request.session['email']
     userdata = User.objects.get(email=email)
 
+    # getting all the records from the entry table
     entrydata_all = Entry.objects.get(email=email)
 
     dt = datetime.now()
     today = datetime.today()
     a_week_ago = today - timedelta(days=7)
-    
+
     rolling_week_entries = {
-        "Monday": [],
-        "Tuesday": [],
-        "Wednesday": [],
-        "Thursday": [],
-        "Friday": [],
-        "Saturday": [],
-        "Sunday": [],
+        0: [], # today
+        1: [], # yesterday
+        2: [], # 2 days ago
+        3: [], # 3 days ago
+        4: [], # 4 days ago
+        5: [], # 5 days ago
+        6: [], # 6 days ago
+        7: [], # 1 full week ago (if today is Wendesday, this is last Wednesday)
     }
-
-    for entry in entrydata_all :
-        if entry.date >= a_week_ago and entry.date <= today :
-            day_of_week = str(entry.date.strftime('%A'))
-            rolling_week_entries[day_of_week]
-            
-
     
+    # For every entry record in the Entry table
+    for entry in entrydata_all :
+        # if the current entry's date is within the previous week
+        if entry.date >= a_week_ago and entry.date <= today :
+            # Find out how many days ago that entry was
+            days_ago = timedelta(today) - timedelta(entry.date)
+            # Adding the entry object to the key that corresponds with how many days ago that entry was
+            rolling_week_entries[days_ago].append(entry)
 
+    # Creating a list to hold all of the days of the week over the past rolling week
+    days_of_week = []
+
+    # For each day (key) in the rolling_week_entries table
+    for day_number in rolling_week_entries:
+        # get the number of days before the current day
+        entry_day_of_week_date = rolling_week_entries[day_number][0].date
+
+        # get the day of the week of the entries of the day ago thing
+        day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
+
+        # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
+        days_of_week.append(day_of_week_name)
 
 
     context = {
         "user" : userdata,
         "past_week_entries": rolling_week_entries,
+        "days_of_week": days_of_week,
     }
 
     return render(request, 'kidneyfoundation/dashboard.html', context)
@@ -174,6 +191,7 @@ def dashboardPageView(request) :
 
 def chart2PageView(request) :
     return render(request, 'kidneyfoundation/chart2.html')
+
 
 def suggestPageView(request, data=None) :
     email = request.session['email']
@@ -196,6 +214,7 @@ def diaryPageView(request, data=None, status=0) :
     }
     return render(request, 'kidneyfoundation/diary.html', context)
 
+
 def findFood(request) :
     if request.method == 'POST' :
         r = requests.api.get('https://api.nal.usda.gov/fdc/v1/foods/search?query=' + request.POST['search'] + '&api_key=lS71PofdvinARzkWGHodOv25a5wD9DlDIlxyj9sH')
@@ -203,8 +222,10 @@ def findFood(request) :
             json_data = json.loads(r.content)
             return diaryPageView(request, json_data['foods'], r.status_code)
 
+
 def addFoodView(request) :
     return diaryPageView(request)
+
 
 def showUserPageView(request) :
     email = request.session['email']
@@ -217,7 +238,6 @@ def showUserPageView(request) :
     return render(request, 'kidneyfoundation/showUser.html', context)
 
 
-
 def editUserPageView(request):
     email = request.session['email']
     data = User.objects.get(email=email)
@@ -227,6 +247,7 @@ def editUserPageView(request):
     }
 
     return render(request, 'kidneyfoundation/editUser.html', context)
+
 
 def updateUserInfoView(request) :
     email = request.session['email']
@@ -256,6 +277,7 @@ def updateUserInfoView(request) :
         user.save()
 
     return showUserPageView(request)
+
 
 def showLevelsPageView(request) :
     email = request.session['email']
