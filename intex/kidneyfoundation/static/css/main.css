@@ -136,17 +136,20 @@ form.searchbar input#search:focus {
     justify-content: space-between;
     flex-direction: row;
     padding: 10px 15px;
-    border: 2px solid #eee;
     border-radius: 5px;
-    margin: 5px 0
+}
+
+.diary-content .divider.meal-heading {
+    border-bottom: 4px solid rgba(125, 190, 92, .5);
 }
 .meal-item .trash-container {
-    background-color: white;
+    background-color: transparent;
     padding: 10px;
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: .2s;
 }
 .meal-item .trash-container:hover {
     background-color: rgb(255, 228, 233);
@@ -161,9 +164,17 @@ form.searchbar input#search:focus {
 .meal-item p {
     margin: 0 75px 0 0;
 }
+.meal-container {
+    border: 2px solid #bbb;
+    border-radius: 5px;
+}
+.meal-container .divider {
+    margin: 0;
+}
 
 .none {
     opacity: .6;
+    margin-left: 10px;
 }
 
 h4:first-child {
@@ -178,10 +189,28 @@ h4 {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    padding: 20px 100px;
 }
 .date-header svg {
     transform: scale(2);
 }
 .diary-content {
-    padding: 75px;
+    padding: 20px 75px;
+}
+.date-arrow {
+    color:rgb(125, 190, 92);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    transition: .2s;
+}
+.date-arrow:hover {
+    color:rgb(125, 190, 92);
+    background-color: rgb(228, 251, 217);
+}
+
+.add-btn svg {
+    transform: scale(2)
 }
