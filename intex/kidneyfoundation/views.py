@@ -5,7 +5,7 @@ import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import * # need to make model for this
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from decimal import Decimal
 
 
@@ -139,10 +139,9 @@ def dashboardPageView(request) :
     userdata = User.objects.get(email=email)
 
     # getting all the records from the entry table
-    entrydata_all = Entry.objects.get(email=email)
+    entrydata_all = Entry.objects.filter(email=email)
 
-    dt = datetime.now()
-    today = datetime.today()
+    today = date.today()
     a_week_ago = today - timedelta(days=7)
 
     rolling_week_entries = {
@@ -161,9 +160,9 @@ def dashboardPageView(request) :
         # if the current entry's date is within the previous week
         if entry.date >= a_week_ago and entry.date <= today :
             # Find out how many days ago that entry was
-            days_ago = timedelta(today) - timedelta(entry.date)
+            days_ago = (today - entry.date)
             # Adding the entry object to the key that corresponds with how many days ago that entry was
-            rolling_week_entries[days_ago].append(entry)
+            rolling_week_entries[days_ago.days].append(entry)
 
     # Creating a list to hold all of the days of the week over the past rolling week
     days_of_week = []
@@ -171,7 +170,8 @@ def dashboardPageView(request) :
     # For each day (key) in the rolling_week_entries table
     for day_number in rolling_week_entries:
         # get the number of days before the current day
-        entry_day_of_week_date = rolling_week_entries[day_number][0].date
+        if len(rolling_week_entries[day_number]) > 0 :
+            entry_day_of_week_date = rolling_week_entries[day_number][0].date
 
         # get the day of the week of the entries of the day ago thing
         day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
@@ -179,12 +179,24 @@ def dashboardPageView(request) :
         # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
         days_of_week.append(day_of_week_name)
 
+    k_data = []
+    na_data = []
+    phos_data = []
+
+    for day in rolling_week_entries :
+        for entry in rolling_week_entries[day] :
+            k_data.append(entry.k_intake)
+            na_data.append(entry.na_intake)
+            phos_data.append(entry.phos_intake)
 
     context = {
         "user" : userdata,
         "past_week_entries": rolling_week_entries,
         "days_of_week": days_of_week,
-        'logged_in' : loggedIn(request)
+        'logged_in' : loggedIn(request),
+        'k_data' : k_data,
+        'na_data' : na_data,
+        'phos_data' : phos_data
     }
 
     return render(request, 'kidneyfoundation/dashboard.html', context)
