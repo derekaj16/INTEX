@@ -294,8 +294,9 @@ def loggedIn(request) :
     return logged_in
 
 def diaryPageView(request, data=None, status=0, date=date.today()) :
-    
+    name = User.objects.get(email=request.session['email']).first_name
     context = {
+        'name' : name,
         'foods' : data,
         'status' : status,
         'date' : date,
