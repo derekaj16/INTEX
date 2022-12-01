@@ -3,7 +3,7 @@
     const myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['K', 'Na', 'Phos'],
+            labels: ['K (mg)', 'Na (mg)', 'Phos (mg)'],
             datasets: [
             {
                 label: 'Micronutrient Levels',
@@ -28,6 +28,18 @@
             scales: {
                 y: {
                     beginAtZero: true
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: "Daily Levels (mg)"
+                    },
+                    // ticks: {
+                    //    // Include a dollar sign in the ticks
+                    //    callback: function(value, index, ticks) {
+                    //        return value + " mg";
+                    //    }
+                    //},
                 }
             }
         }
