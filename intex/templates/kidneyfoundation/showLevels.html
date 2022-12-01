@@ -9,11 +9,95 @@
     <h1><b>Nice to Have You.</b></h1>
     <p>
         <p><b>K Level:</b> {{user.k_level}}</p>
+        {% if user.k_level < 3.6 %}
+        <p>Your Potassium levels are lower than normal. Try to up your intake! Try avocados, bananas, cantaloupe, or other foods with high potassium.</p>
+        {% elif user.k_level > 5.2 %}
+        <p>Your Potassium levels are higher than normal. Try to avoid certain salt substitutes, herbal remedies, or supplements. These can have ingredients that raise potassium levels.</p>
+        {% endif %}
+
         <p><b>Na Level:</b> {{user.na_level}}</p>
+        {% if user.na_level < 135 %}
+        <p>Your Sodium levels are lower than normal. Try to up your intake! Try fresh vegetables with no salt/sauce added, fresh poultry, fish, or pork- look for items with "Low Sodium" on the label.</p>
+        {% elif user.na_level > 145 %}
+        <p>Your Sodium levels are higher than normal. Try to drink more water, or a sports drink that contains electrolytes.</p>
+        {% endif %}
+
         <p><b>Phos Level:</b> {{user.phos_level}}</p>
+        {% if user.phos_level < 2.8 %}
+        <p>Your Phosphate levels are lower than normal. Try to up your intake! Add lean meat, fish, poultry, low-fat dairy, whole wheat, almonds, peanuts, beans and legumes to your diet.</p>
+        {% elif user.phos_level > 4.5 %}
+        <p>Your Phosphate levels are higher than normal. Add fresh fruits and vegetables, breads, pasta, or corn cereals to your diet.</p>
+        {% endif %}
+
         <p><b>Creatanine Level:</b> {{user.creatinine_level}}</p>
+        {% comment %} This is for men with stage 3/4 {% endcomment %}
+        {% if user.gender == 'M'%}
+            {% if user.stage == 3 or user.stage == 4 %} 
+                {% if user.creatinine_level < 1.3 %} 
+                    <p>Your Creatinine levels are low.</p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for men with dialysis {% endcomment %}
+        {% if user.gender == 'M'%}
+            {% if user.on_dialysis == True %} 
+                {% if user.creatinine_level < 1.3 %} 
+                    <p>Your Creatinine levels are low.</p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for normal men {% endcomment %}
+        {% if user.gender == 'M' %}
+            {% if user.creatinine_level < 0.7 %}
+                <p>Your Creatanine levels are low.</p>
+            {% endif %}
+        {% endif %}
+        {% if user.gender == 'M' %} 
+            {% if user.creatinine_level > 1.3 %}
+                <p>Your Creatinine levels are high.</p>
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for women with stage 3/4 {% endcomment %}
+        {% if user.gender == 'F'%} 
+            {% if user.stage == 3 or user.stage == 4 %}
+                {% if user.creatinine_level < 1.1 %}
+                    <p>Your Creatanine levels are low.</p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for women with dialysis {% endcomment %}
+        {% if user.gender == 'F' %} 
+            {% if user.on_dialysis == True %}
+                {% if user.creatinine_level < 1.3 %}
+                    <p>Your Creatanine levels are low.</p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for normal females {% endcomment %}
+        {% if user.gender == 'F' %} 
+            {% if user.creatinine_level < 0.6 %}
+                <p>Your Creatinine levels are low.</p>
+            {% endif %}
+        {% endif %}
+        {% if user.gender == 'F'%} 
+            {% if user.creatinine_level > 1.1 %}
+                <p>Your Creatinine levels are high.</p>
+            {% endif %}
+        {% endif %}
+
         <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
+        {% if user.albumin_level < 3.5 %}
+            <p>Your Albumin levels are lower than normal. Try to up your intake with high protein foods! Some example are nuts, eggs, and dairy product.</p>
+        {% elif user.albumin_level > 3.5 %}
+            <p>Your Albumin levels are higher than normal. Try to lower intake by avoiding foods high in sodium or salt, and stay away from alcohol.</p>
+        {% endif %}
+        
         <p><b>Blood Sugar Level:</b> {{user.blood_sugar_level}}</p>
+        {% if user.blood_sugar_level < 70 %}
+            <p>Your blood sugar level is lower than normal. Try to up your intake with fruit juice, fat-free milk, raisins, and grapes.</p>
+        {% elif user.blood_sugar_level < 100 %}
+            <p>Your blood sugar level is higher than normal. Try to lower your intake by eating more fiber, manage your stress levels, and get moving. Exercise is a great way to lower your blood sugar.</p>
+        {% endif %}
 
         <a class='btn btn-primary' href="{% url 'editLevels' %}">Update Levels</a>
 

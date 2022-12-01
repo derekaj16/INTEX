@@ -85,7 +85,7 @@ DATABASES = {
         'NAME': 'kidneyfoundation',
         'USER': 'postgres',
         'PASSWORD': 'glimmer133',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
     }
 }
 

@@ -5,8 +5,9 @@ import json
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import * # need to make model for this
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
+
 
 # feet/inches to centimeters Function
 def heightToCm(feet, inches) :
@@ -141,12 +142,39 @@ def aboutPageView(request) :
 
 def dashboardPageView(request) :
     email = request.session['email']
-    data = User.objects.get(email=email)
+    userdata = User.objects.get(email=email)
+
+    entrydata_all = Entry.objects.get(email=email)
+
+    dt = datetime.now()
+    today = datetime.today()
+    a_week_ago = today - timedelta(days=7)
+    
+    rolling_week_entries = {
+        "Monday": [],
+        "Tuesday": [],
+        "Wednesday": [],
+        "Thursday": [],
+        "Friday": [],
+        "Saturday": [],
+        "Sunday": [],
+    }
+
+    for entry in entrydata_all :
+        if entry.date >= a_week_ago and entry.date <= today :
+            day_of_week = str(entry.date.strftime('%A'))
+            rolling_week_entries[day_of_week]
+            
+
+    
+
+
 
     context = {
         "user" : data,
         'logged_in' : loggedIn(request)
     }
+
     return render(request, 'kidneyfoundation/dashboard.html', context)
 
 
@@ -384,4 +412,4 @@ def updateLevelsView(request) :
         user.save()
 
     
-    return showLevelsPageView(request)
+    return render(request, 'kidneyfoundation/showLevels.html', context)
