@@ -144,7 +144,8 @@ def dashboardPageView(request) :
     userdata = User.objects.get(email=email)
 
     # getting all the records from the entry table
-    entrydata_all = Entry.objects.filter(email=email)
+    entrydata_all = Entry.objects.select_related('fdcId').filter(email=email)
+    
 
     today = date.today()
     a_week_ago = today - timedelta(days=7)
@@ -188,12 +189,13 @@ def dashboardPageView(request) :
     na_data = []
     phos_data = []
 
+
     for day in rolling_week_entries :
         for entry in rolling_week_entries[day] :
             
-            k_data.append(int(entry.k_intake))
-            na_data.append(int(entry.na_intake))
-            phos_data.append(int(entry.phos_intake))
+            k_data.append(int(entry.num_servings * entry.fdcId.k_value))
+            na_data.append(int(entry.num_servings * entry.fdcId.na_value))
+            phos_data.append(int(entry.num_servings * entry.fdcId.phos_value))
 
     context = {
         "user" : userdata,
