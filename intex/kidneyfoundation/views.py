@@ -111,15 +111,19 @@ def LogoutView(request) :
 
 
 def homePageView(request) :
-    if request.session['email'] :
+    if 'email' in request.session :
         email = request.session['email']
         data = User.objects.get(email=email)
+        logged_in = loggedIn(request)
     else :
         email = ''
         data = None
+        logged_in = False
+
+
     context = {
         "user" : data,
-        "logged_in" : loggedIn(request)
+        "logged_in" : logged_in
     }
     return render(request, 'kidneyfoundation/home.html', context)
 
@@ -175,10 +179,10 @@ def dashboardPageView(request) :
             entry_day_of_week_date = rolling_week_entries[day_number][0].date
 
         # get the day of the week of the entries of the day ago thing
-        day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
+            day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
 
         # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
-        days_of_week.append(day_of_week_name)
+            days_of_week.append(day_of_week_name)
 
     k_data = []
     na_data = []
@@ -288,12 +292,6 @@ def addFoodView(request) :
         if  len(existingFood) > 0 : # Check if food is already inside database
             food = Food.objects.get(fdcId=request.POST['fdcId'])
             entry.fdcId = food
-            entry.k_intake = float(food.k_value) * float(servings)
-            entry.na_intake = float(food.na_value) * float(servings)
-            entry.phos_intake = float(food.phos_value) * float(servings)
-            entry.protein_intake = float(food.protien_value) * float(servings)
-            entry.fat_intake = float(food.fat_value) * float(servings)
-            entry.carb_intake = float(food.carbs_value) * float(servings)
 
         else :
             # Create food and entry object
@@ -314,45 +312,33 @@ def addFoodView(request) :
 
             if (k_value) :
                 food.k_value = float(k_value) * float(servings)
-                entry.k_intake = float(k_value) * float(servings)
             else :
                 food.k_value = 0.0
-                entry.k_intake = 0.0
             
             if (na_value) :
                 food.na_value = float(na_value) * float(servings)
-                entry.na_intake = float(na_value) * float(servings)
             else :
                 food.na_value = 0.0
-                entry.na_intake = 0.0
 
             if (phos_value) :
                 food.phos_value = float(phos_value) * float(servings)
-                entry.phos_intake = float(phos_value) * float(servings)
             else :
                 food.phos_value = 0.0
-                entry.phos_intake = 0.0
 
             if (protien_value) :
                 food.protien_value = float(protien_value) * float(servings)
-                entry.protein_intake = float(protien_value) * float(servings)
             else :
                 food.protien_value = 0.0
-                entry.protein_intake = 0.0
 
             if (fat_value) :
                 food.fat_value = float(fat_value) * float(servings)
-                entry.fat_intake = float(fat_value) * float(servings)
             else :
                 food.fat_value = 0.0
-                entry.fat_intake = 0.0
 
             if (carbs_value) :
                 food.carbs_value = float(carbs_value) * float(servings)
-                entry.carb_intake = float(carbs_value) * float(servings)
             else :
                 food.carbs_value = 0.0
-                entry.carb_intake = 0.0
 
             if (calories) :
                 food.calories = float(calories) * float(servings)

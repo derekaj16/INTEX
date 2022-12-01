@@ -51,12 +51,6 @@ class Entry(models.Model) :
     num_servings = models.DecimalField(max_digits=7, decimal_places=2)
     email = models.ForeignKey('User', on_delete=models.SET_NULL, null=True, db_column='email')
     fdcId = models.ForeignKey('Food', on_delete=models.SET_NULL, null=True, db_column='fdcId')
-    k_intake = models.DecimalField(max_digits=7, decimal_places=2)
-    na_intake = models.DecimalField(max_digits=7, decimal_places=2)
-    phos_intake = models.DecimalField(max_digits=7, decimal_places=2)
-    protein_intake = models.DecimalField(max_digits=7, decimal_places=2)
-    carb_intake = models.DecimalField(max_digits=7, decimal_places=2)
-    fat_intake = models.DecimalField(max_digits=7, decimal_places=2)
 
     class Meta :
         db_table = 'entry'
