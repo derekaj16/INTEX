@@ -180,7 +180,7 @@ def diaryPageView(request, data=None, status=0, fdcId=0) :
         'breakfast' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='B'),
         'lunch' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='L'),
         'dinner' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='D'),
-        'snacks' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='S')
+        'snacks' : Entry.objects.select_related('fdcId').filter(email=request.session['email'], meal_type='S'),
         'logged_in' : loggedIn(request)
 
     }
