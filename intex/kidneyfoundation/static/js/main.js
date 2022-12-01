@@ -1,11 +1,44 @@
-let foodList = []
-
 function addToList(food) {
-  foodList.push(food);
-  document.getElementById(food['fdcId']).innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/></svg>'
   document.getElementById('overlay').style.display = 'block';
   document.getElementById('food-name').innerHTML = titleCase(food['description']);
-  document.getElementById('serving-size').innerHTML = food['servingSize'] + ' ' + food['servingSizeUnit']
+  if (food['servingSize']) {
+    document.getElementById('serving-size').innerHTML = food['servingSize'] + ' ' + food['servingSizeUnit'];
+  } else {
+    document.getElementById('serving-size').innerHTML = 1;
+  }
+
+  // Filling hidden fields
+  document.getElementById('fdcId').value = food['fdcId']
+  document.getElementById('food_name').value = food['description']
+  if (food['servingSize']) { // Check if serving size is an attribute in the database
+    document.getElementById('serving_size').value = food['servingSize']
+    document.getElementById('serving_size_unit').value = food['servingSizeUnit']
+  }
+  for (let i = 0; i < food['foodNutrients'].length; i++) {
+    // console.log(food['foodNutrients'][i]['nutrientName'] + ' ' + food['foodNutrients'][i]['value']);
+    if (food['foodNutrients'][i]['nutrientName'] === 'Potassium, K') {
+      document.getElementById('k_value').value = food['foodNutrients'][i]['value'];
+    } 
+    else if (food['foodNutrients'][i]['nutrientName'] === 'Sodium, Na') {
+      document.getElementById('na_value').value = food['foodNutrients'][i]['value'];
+    }
+    else if (food['foodNutrients'][i]['nutrientName'] === 'Phosphorus, P') {
+      document.getElementById('phos_value').value = food['foodNutrients'][i]['value'];
+    }
+    else if (food['foodNutrients'][i]['nutrientName'] === 'Protein') {
+      document.getElementById('protein_value').value = food['foodNutrients'][i]['value'];
+    }
+    else if (food['foodNutrients'][i]['nutrientName'] === 'Total lipid (fat)') {
+      document.getElementById('fat_value').value = food['foodNutrients'][i]['value'];
+    }
+    else if (food['foodNutrients'][i]['nutrientName'] === 'Carbohydrate, by difference') {
+      document.getElementById('carbs_value').value = food['foodNutrients'][i]['value'];
+    }
+    else if (food['foodNutrients'][i]['nutrientName'] === 'Energy') {
+      document.getElementById('calories').value = food['foodNutrients'][i]['value'];
+    }
+  };
+  
 }
 
 function hidePopUp() {
