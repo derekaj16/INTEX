@@ -35,12 +35,11 @@
       background: greenyellow;
       border: 1px solid darkgreen;
     }
-    </style>
-     
-<br><br><br><br>
+    </style>     
 
-<div class='container'>
-    <h1 class="text-center pb-3"><b>Serum Levels</b></h1>
+<center>
+<div class='container border-none shadow pt-3 text-center' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 10px 0px">
+    <h1 class="text-center pb-3" style="padding-bottom: 10px"><b>Serum Levels</b></h1>
         <p><b>K Level:</b> {{user.k_level}}</p>
         {% if user.k_level < 3.6 %}
             <div class="box warn">
@@ -162,16 +161,17 @@
             <div class="box warn">
                 &#9888; Your blood sugar level is lower than normal. Try to up your intake with fruit juice, fat-free milk, raisins, and grapes.
             </div>
-        {% elif user.blood_sugar_level < 100 %}
+        {% elif user.blood_sugar_level > 100 %}
             <div class="box warn">
                 &#9888; Your blood sugar level is higher than normal. Try to lower your intake by eating more fiber, manage your stress levels, and get moving. Exercise is a great way to lower your blood sugar.
             </div>
         {% endif %}
 
         <center>
-        <a class='btn btn-success mt-3' href="{% url 'editLevels' %}">Update Levels</a>
+        <a class='btn btn-primary mt-3' href="{% url 'editLevels' %}">Update Levels</a>
         </center>
 
         {% comment %} <a class='btn btn-primary' href="{% url 'home' email=user.email %}">Test Home Page Param</a> {% endcomment %}
 </div>
+</center>
 {% endblock %}
