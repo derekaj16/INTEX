@@ -1,0 +1,177 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Serum Levels{% endblock %}
+
+{% block content %}
+
+{% comment %} CSS for alarm boxes {% endcomment %}
+<style>
+    /* (A) SHARED CLASS */
+    .box {
+      margin: 10px;
+      padding: 10px;
+      font-size: 18px;
+    }
+     
+    /* (B) BOX VARIATIONS */
+    /* (B1) INFORMATION BOX */
+    .info {
+      color: brown;
+      background: cornsilk;
+      border: 1px solid burlywood;
+    }
+     
+    /* (B2) WARNING BOX */
+    .warn {
+      color: darkmagenta;
+      background: lightpink;
+      border: 1px solid darkred;
+      font-size: 9pt
+    }
+     
+    /* (B3) SUCCESS */
+    .ok {
+      color: darkgreen;
+      background: greenyellow;
+      border: 1px solid darkgreen;
+    }
+    </style>     
+
+<center>
+<div class='container border-none shadow pt-3 text-center' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 10px 0px">
+    <h1 class="text-center pb-3" style="padding-bottom: 10px"><b>Serum Levels</b></h1>
+        <p><b>K Level:</b> {{user.k_level}}</p>
+        {% if user.k_level < 3.6 %}
+            <div class="box warn">
+                &#9888; Your Potassium levels are lower than normal. Try to up your intake! Try avocados, bananas, cantaloupe, or other foods with high potassium.
+            </div>
+        {% elif user.k_level > 5.2 %}
+            <div class="box warn">
+                &#9888; Your Potassium levels are higher than normal. Try to avoid certain salt substitutes, herbal remedies, or supplements. These can have ingredients that raise potassium levels.
+            </div>
+        {% endif %}
+
+        <p><b>Na Level:</b> {{user.na_level}}</p>
+        {% if user.na_level < 135 %}
+            <div class="box warn">
+                &#9888; Your Sodium levels are lower than normal. Try to up your intake! Try nuts, seeds, nut butter, olives, or canned seafood.
+            </div>
+        {% elif user.na_level > 145 %}
+            <div class="box warn">
+                &#9888; Your Sodium levels are higher than normal. Try to drink more water, or a sports drink that contains electrolytes.
+            </div>
+        {% endif %}
+
+        <p><b>Phos Level:</b> {{user.phos_level}}</p>
+        {% if user.phos_level < 2.8 %}
+            <div class="box warn">
+                &#9888; Your Phosphate levels are lower than normal. Try to up your intake! Add lean meat, fish, poultry, low-fat dairy, whole wheat, almonds, peanuts, beans and legumes to your diet.
+            </div>
+        {% elif user.phos_level > 4.5 %}
+            <div class="box warn">
+                &#9888; Your Phosphate levels are higher than normal. Add fresh fruits and vegetables, breads, pasta, or corn cereals to your diet.
+            </div>
+        {% endif %}
+
+        <p><b>Creatanine Level:</b> {{user.creatinine_level}}</p>
+        {% comment %} This is for men with stage 3/4 {% endcomment %}
+        {% if user.gender == 'M'%}
+            {% if user.stage == 3 or user.stage == 4 %} 
+                {% if user.creatinine_level < 1.3 %} 
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for men with dialysis {% endcomment %}
+        {% if user.gender == 'M'%}
+            {% if user.on_dialysis == True %} 
+                {% if user.creatinine_level < 1.3 %} 
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for normal men {% endcomment %}
+        {% if user.gender == 'M' %}
+            {% if user.creatinine_level < 0.7 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are low.
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if user.gender == 'M' %} 
+            {% if user.creatinine_level > 1.3 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are high.
+                </div>
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for women with stage 3/4 {% endcomment %}
+        {% if user.gender == 'F'%} 
+            {% if user.stage == 3 or user.stage == 4 %}
+                {% if user.creatinine_level < 1.1 %}
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for women with dialysis {% endcomment %}
+        {% if user.gender == 'F' %} 
+            {% if user.on_dialysis == True %}
+                {% if user.creatinine_level < 1.3 %}
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} This is for normal females {% endcomment %}
+        {% if user.gender == 'F' %} 
+            {% if user.creatinine_level < 0.6 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are low.
+                </div>
+            {% endif %}
+        {% endif %}
+        {% if user.gender == 'F'%} 
+            {% if user.creatinine_level > 1.1 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are high.
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
+        {% if user.albumin_level < 3.5 %}
+            <div class="box warn">
+                &#9888; Your Albumin levels are lower than normal. Try to up your intake with high protein foods! Some example are nuts, eggs, and dairy product.
+            </div>
+        {% elif user.albumin_level > 3.5 %}
+            <div class="box warn">
+                &#9888; Your Albumin levels are higher than normal. Try to lower intake by avoiding foods high in sodium or salt, and stay away from alcohol.
+            </div>
+        {% endif %}
+        
+        <p><b>Blood Sugar Level:</b> {{user.blood_sugar_level}}</p>
+        {% if user.blood_sugar_level < 70 %}
+            <div class="box warn">
+                &#9888; Your blood sugar level is lower than normal. Try to up your intake with fruit juice, fat-free milk, raisins, and grapes.
+            </div>
+        {% elif user.blood_sugar_level > 100 %}
+            <div class="box warn">
+                &#9888; Your blood sugar level is higher than normal. Try to lower your intake by eating more fiber, manage your stress levels, and get moving. Exercise is a great way to lower your blood sugar.
+            </div>
+        {% endif %}
+
+        <center>
+        <a class='btn btn-primary mt-3' href="{% url 'editLevels' %}">Update Levels</a>
+        </center>
+
+        {% comment %} <a class='btn btn-primary' href="{% url 'home' email=user.email %}">Test Home Page Param</a> {% endcomment %}
+</div>
+</center>
+{% endblock %}
