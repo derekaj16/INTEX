@@ -157,6 +157,7 @@ def dashboardPageView(request) :
     k_data = []
     na_data = []
     phos_data = []
+    protein_data = []
 
     # for each day in the rolling_week_entries dictionary
     for day in rolling_week_entries :
@@ -164,6 +165,7 @@ def dashboardPageView(request) :
         dayK_intake = 0
         dayNa_intake = 0
         dayPhos_intake = 0
+        dayProtein_intake = 0
         
         if len(rolling_week_entries[day]) > 0 :
             for entry in rolling_week_entries[day] :
@@ -172,49 +174,60 @@ def dashboardPageView(request) :
                 entryK_intake = int(entry.fdcId.k_value * entry.num_servings)
                 entryNa_intake = int(entry.fdcId.na_value * entry.num_servings)
                 entryPhos_intake = int(entry.fdcId.phos_value * entry.num_servings)
+                entryProtein_intake = int(entry.fdcId.protien_value * entry.num_servings)
                 
         else :
             entryK_intake = 0
             entryNa_intake = 0
             entryPhos_intake = 0
+            entryProtein_intake = 0
                 
             # adding the entry's intake to the total intake of that nutrient for that day
         dayK_intake += entryK_intake
         dayNa_intake += entryNa_intake
         dayPhos_intake += entryPhos_intake
+        dayPhos_intake += entryPhos_intake
+        dayProtein_intake += entryProtein_intake 
 
         # add the intake (# servings * nutrient amount) for each nutrient for that day to the list corresponding with that nutrient
         k_data.append(dayK_intake)
         na_data.append(dayNa_intake)
         phos_data.append(dayPhos_intake)
+        protein_data.append(dayProtein_intake)
 
         # get today's data
         todays_k_intake = k_data[0]
         todays_na_intake = na_data[0]
         todays_phos_intake = phos_data[0]
+        todays_protein_intake = protein_data[0]
         
     if user.on_dialysis :
         recommended_k = 2000
         recommended_na = (750 + 2000) / 2 # the middle number (optimal) between 750-2000
         recommended_phos = (800 + 1000) / 2 # the middle number (optimal) between 800-1000
+        recommended_protein = 1.2 # g/kg...
 
     elif user.stage in (3,4): 
         recommended_k = (2500 + 3000) / 2 # the middle number (optimal) between 2500-3000
         recommended_na = (1495 + 2300) / 2 # the middle number (optimal) between 1495-2300
         recommended_phos = (800 + 1000) / 2 # the middle number (optimal) between 800-1000
+        recommended_protein = 0.6 # g/kg...
     else :
         recommended_k = 3500
         recommended_na = 2300
         recommended_phos = 3000
+        recommended_protein = 0.8  # g/kg...
 
     todays_k_percent = (todays_k_intake / recommended_k) * 100
     todays_na_percent = (todays_na_intake / recommended_na) * 100
     todays_phos_percent = (todays_phos_intake / recommended_phos) * 100
+    todays_protein_percent = ((todays_protein_intake /lbsToKg(user.weight)) / recommended_protein) * 100
 
     # reversing the lists so that the dashboard shows the days in chronological order (not backwards chronological which would have today on the left)
     k_data.reverse()
     na_data.reverse()
     phos_data.reverse()
+    protein_data.reverse()
     
     context = {
         "user" : user,
@@ -224,9 +237,11 @@ def dashboardPageView(request) :
         "todays_k_percent": todays_k_percent,
         "todays_na_percent": todays_na_percent,
         "todays_phos_percent": todays_phos_percent,
+        "todays_protein_percent": todays_protein_percent,
         'k_data' : k_data,
         'na_data' : na_data,
-        'phos_data' : phos_data
+        'phos_data' : phos_data,
+        'protein_data': protein_data,
     }
 
     return render(request, 'kidneyfoundation/dashboard.html', context)
