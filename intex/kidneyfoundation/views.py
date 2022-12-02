@@ -159,6 +159,8 @@ def dashboardPageView(request) :
     phos_data = []
     protein_data = []
 
+   
+
     # for each day in the rolling_week_entries dictionary
     for day in rolling_week_entries :
         # for each entry in that day
@@ -166,6 +168,7 @@ def dashboardPageView(request) :
         dayNa_intake = 0
         dayPhos_intake = 0
         dayProtein_intake = 0
+        
         
         if len(rolling_week_entries[day]) > 0 :
             for entry in rolling_week_entries[day] :
@@ -175,19 +178,22 @@ def dashboardPageView(request) :
                 entryNa_intake = int(entry.fdcId.na_value * entry.num_servings)
                 entryPhos_intake = int(entry.fdcId.phos_value * entry.num_servings)
                 entryProtein_intake = int(entry.fdcId.protien_value * entry.num_servings)
+
+                dayK_intake += entryK_intake
+                dayNa_intake += entryNa_intake
+                dayPhos_intake += entryPhos_intake
+                dayPhos_intake += entryPhos_intake
+                dayProtein_intake += entryProtein_intake 
                 
-        else :
-            entryK_intake = 0
-            entryNa_intake = 0
-            entryPhos_intake = 0
-            entryProtein_intake = 0
+        # else :
+        #     entryK_intake = 0
+        #     entryNa_intake = 0
+        #     entryPhos_intake = 0
+        #     entryProtein_intake = 0
+
                 
-            # adding the entry's intake to the total intake of that nutrient for that day
-        dayK_intake += entryK_intake
-        dayNa_intake += entryNa_intake
-        dayPhos_intake += entryPhos_intake
-        dayPhos_intake += entryPhos_intake
-        dayProtein_intake += entryProtein_intake 
+        # adding the entry's intake to the total intake of that nutrient for that day
+     
 
         # add the intake (# servings * nutrient amount) for each nutrient for that day to the list corresponding with that nutrient
         k_data.append(dayK_intake)
