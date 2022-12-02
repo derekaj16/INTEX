@@ -210,7 +210,7 @@
                         {% if foods %}
                         <h4 class="text-center">Results</h4>
                         {% for food in foods %}
-                        <div class="search-item" onclick="addToList({{ food }})" >
+                        <div class="search-item" onclick="addFoodPopup({{ food }})" >
                             <div class="item">
                                 <div>
                                     <b>{{ food.description | title }}</b> {% if food.brandName %}- {{ food.brandName | title}}{% endif %}<br>

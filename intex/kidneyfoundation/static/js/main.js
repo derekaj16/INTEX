@@ -1,4 +1,4 @@
-function addToList(food) {
+function addFoodPopup(food) {
   document.getElementById('overlay').style.display = 'block';
   document.getElementById('food-name').innerHTML = titleCase(food['description']);
   if (food['servingSize']) {
