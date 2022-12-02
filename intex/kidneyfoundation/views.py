@@ -185,13 +185,6 @@ def dashboardPageView(request) :
                 dayPhos_intake += entryPhos_intake
                 dayProtein_intake += entryProtein_intake 
                 
-        # else :
-        #     entryK_intake = 0
-        #     entryNa_intake = 0
-        #     entryPhos_intake = 0
-        #     entryProtein_intake = 0
-
-                
         # adding the entry's intake to the total intake of that nutrient for that day
      
 
