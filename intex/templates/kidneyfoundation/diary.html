@@ -1,0 +1,241 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% block additionalCSS %}
+<link rel="newest stylesheet" href="{% static 'css/main.css' %}">
+{% endblock additionalCSS %}
+
+{% block additionalJS %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock additionalJS %}
+
+{% block title %}Food Diary{% endblock title %}
+
+
+{% block content %}
+<div id="overlay">
+    <div id="text">
+        <form action="{% url 'add' %}" method="POST" class="popup-form" id="servings-form">
+            {% csrf_token %}
+            <input type="text" id="fdcId" name="fdcId" style="display: none;">
+            <input type="text" id="food_name" name="food_name" style="display: none;">
+            <input type="text" id="serving_size" name="serving_size" style="display: none">
+            <input type="text" id="serving_size_unit" name="serving_size_unit" style="display: none">
+            <input type="text" id="k_value" name="k_value" style="display: none;">
+            <input type="text" id="na_value" name="na_value" style="display: none;">
+            <input type="text" id="phos_value" name="phos_value" style="display: none;">
+            <input type="text" id="protein_value" name="protein_value" style="display: none;">
+            <input type="text" id="fat_value" name="fat_value" style="display: none;">
+            <input type="text" id="carbs_value" name="carbs_value" style="display: none;">
+            <input type="text" id="calories" name="calories" style="display: none;">
+            <input type="text" id="date" name="date" value="{{ date }}" style="display: none;">
+            <input type="text" id="time" name="time" style="display: none;">
+
+            <b><p id="food-name"></p></b>
+              
+            <div class="servings-div">
+                <div>
+                    <p style="margin: 0 10px 0 0;"> Servings: </p>
+                    <input type="number" name="servings" id="servings"required value="1" step="0.5">
+                </div>
+                <div class="info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                    </svg>
+                    <span class="tooltiptext">
+                        Serving Size: <span id="serving-size"></span>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <select class="form-select" name="meal" id="meal">
+                    <option value="B">Breakfast</option>
+                    <option value="L">Lunch</option>
+                    <option value="D">Dinner</option>
+                    <option value="S">Snack</option>
+                </select>
+            </div>
+            <div class="buttons">
+                <a class="btn btn-light" id="cancel" onclick="hidePopUp()">Cancel</a>
+                <button class="btn btn-success" type="submit">Add</button>
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+<section class="page-section" id="services">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">{{ name }}'s Food Diary</h2>
+            <h3 class="section-subheading text-muted">What have you eaten today?</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div>
+
+                    <div class="date-header">
+                        <a class="date-arrow" href="{% url 'changeDate' date=date forward=False %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"/>
+                            </svg>
+                        </a>
+                        <h2>{{ date }}</h2>
+                        <a class="date-arrow" href="{% url 'changeDate' date=date forward=True %}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-right-fill" viewBox="0 0 16 16">
+                                <path d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>
+                            </svg>
+                        </a>
+                    </div>
+                    
+                    <div class="diary-content">     
+                        <h4>Breakfast</h4>
+                        <div class="divider meal-heading"></div>
+                        {% if breakfast %}
+                            <div class="meal-container">
+                                {% for food in breakfast %}
+                                <div class="meal-item">
+                                    <p>
+                                        <b>{{ food.fdcId.food_name | title }}</b> - {{ food.num_servings | floatformat:1 }} serving{% if food.num_servings > 1 %}s{% endif %}
+                                    </p>
+                                    <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                        <div class="trash-container"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                                </svg>
+                                        </div>  
+                                    </a>  
+                                </div>
+                                {% if not forloop.last %}
+                                <div class="divider"></div>
+                                {% endif %}
+                                {% endfor %}   
+                            </div>
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
+
+                        <h4>Lunch</h4>
+                        <div class="divider meal-heading"></div>
+                        {% if lunch %}
+                            <div class="meal-container">
+                                {% for food in lunch %}
+                                <div class="meal-item">
+                                    <p>
+                                        <b>{{ food.fdcId.food_name | title }}</b> - {{ food.num_servings | floatformat:1 }} serving{% if food.num_servings > 1 %}s{% endif %}
+                                    </p>
+                                    <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                        <div class="trash-container"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                                </svg>
+                                        </div>  
+                                    </a>  
+                                </div>
+                                {% if not forloop.last %}
+                                <div class="divider"></div>
+                                {% endif %}
+                                {% endfor %}   
+                            </div>
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
+
+                        <h4>Dinner</h4>
+                        <div class="divider meal-heading"></div>
+                        {% if dinner %}
+                            <div class="meal-container">
+                                {% for food in dinner %}
+                                <div class="meal-item">
+                                    <p>
+                                        <b>{{ food.fdcId.food_name | title }}</b> - {{ food.num_servings | floatformat:1 }} serving{% if food.num_servings > 1 %}s{% endif %}
+                                    </p>
+                                    <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                        <div class="trash-container"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                                </svg>
+                                        </div>  
+                                    </a>  
+                                </div>
+                                {% if not forloop.last %}
+                                <div class="divider"></div>
+                                {% endif %}
+                                {% endfor %}   
+                            </div>
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
+
+                        <h4>Snacks</h4>
+                        <div class="divider meal-heading"></div>
+                        {% if snacks %}
+                            <div class="meal-container">
+                                {% for food in snacks %}
+                                <div class="meal-item">
+                                    <p>
+                                        <b>{{ food.fdcId.food_name | title }}</b> - {{ food.num_servings | floatformat:1 }} serving{% if food.num_servings > 1 %}s{% endif %}
+                                    </p>
+                                    <a href="{% url 'delete' fdcId=food.fdcId.fdcId email=food.email.email date=food.date time=food.time %}" class="trash">
+                                        <div class="trash-container"> 
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                                    <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                                </svg>
+                                        </div>  
+                                    </a>  
+                                </div>
+                                {% if not forloop.last %}
+                                <div class="divider"></div>
+                                {% endif %}
+                                {% endfor %}   
+                            </div>                              
+                        {% else %}
+                            <div class="none"><i>No food yet</i></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-12 mx-auto">
+                        <form class="searchbar" action="{% url 'find' date=date %}" method="POST">
+                            {% csrf_token %}
+                            <input type="text" id="search" name="search" placeholder="Add a food">
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        {% if foods %}
+                        <h4 class="text-center">Results</h4>
+                        {% for food in foods %}
+                        <div class="search-item" onclick="addFoodPopup({{ food }})" >
+                            <div class="item">
+                                <div>
+                                    <b>{{ food.description | title }}</b> {% if food.brandName %}- {{ food.brandName | title}}{% endif %}<br>
+                                    <span class="subtext">{{ food.foodCategory }}</span>
+                                </div>
+                                <div class="add-btn" id="{{ food.fdcId }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
+                                        <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        {% if not forloop.last %}
+                        <div class="divider"></div>
+                        {% endif %}
+                        {% endfor %}
+                        {% elif status == 200 %}
+                            <div class="divider"></div>
+                            <h4 class="text-center">Sorry :/ No results were found</h4>
+                            <div class="divider"></div>
+                        {% endif %}   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Suggestions{% endblock %}
+
+{% block content %}
+
+<section class="page-section" id="services">
+  <div class="container">
+    <div class="text-center">
+      <h2 class="section-heading text-uppercase">
+        Treatment Can Make a Difference
+      </h2>
+      <h3 class="section-subheading text-muted">
+        Treatment Options (for ESRD) Dialysis: the process of removing a
+        patient’s blood from the body, filtering it, and putting it back in
+        them. 50% death rate after 5 years 12-15 hours a week Mimics 10-15%
+        normal kidney function
+      </h3>
+      <h3 class="section-subheading text-muted">
+        Transplant: surgically transfer another person’s organ or tissue into a
+        patient. Average kidney transplant lasts 9-14 years Immunosuppression
+        3-5 year wait (5-10 in California) and dietary changes to keep off of
+        dialysis- and even eliminate the need for it entirely.
+      </h3>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="post">
+        <h2>{{ post.title }}</h2>
+
+        <p>{{ post.content }}</p>
+      </div>
+    </div>
+  </div>
+
+<form action="{% url 'search' %}" method="POST" style="margin-top: 400px;">
+    {% csrf_token %}
+    <input type="text" name="search" id="search" placeholder="Search a food">
+    <button type="submit">Search</button>
+</form>
+{% endblock %}
