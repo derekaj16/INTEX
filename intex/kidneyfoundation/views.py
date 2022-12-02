@@ -174,7 +174,7 @@ def dashboardPageView(request) :
 
     # Creating a list to hold all of the days of the week over the past rolling week
     days_of_week = []
-    currentDate = datetime.today()
+    currentDate = datetime.now(pytz.timezone('US/Mountain')).date()
     for day in range(0,7) :
         days_of_week.append(datetime.strftime(currentDate, '%a, %b %d'))
         currentDate = currentDate - timedelta(days=1)

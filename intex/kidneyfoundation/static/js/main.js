@@ -73,24 +73,3 @@ function toggleEye(e) {
 
 visible = !visible;
 }
-// let edit = false;
-
-// function toggleTrash(t) {
-//   let str = t;
-//   let btns = document.getElementsByClassName('trash');
-
-//   // Toggle edit value
-//   edit = !edit;
-
-//   if (edit) {
-//     for (let i = 0; i < btns.length; i++) {
-//       btns[i].style.display = 'block';
-//     }
-//   }
-//   else {
-//     for (let i = 0; i < btns.length; i++) {
-//       btns[i].style.display = 'none';
-//     }
-//   }
-  
-// };
