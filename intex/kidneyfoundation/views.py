@@ -373,7 +373,7 @@ def addFoodView(request) :
                 food.serving_size = serving_size
                 food.serving_size_unit = request.POST['serving_size_unit']
             else :
-                food.serving_size = 0.0
+                food.serving_size = 1.0
                 food.serving_size_unit = None
 
             if (k_value) :
