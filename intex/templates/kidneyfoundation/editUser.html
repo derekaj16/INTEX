@@ -1,0 +1,138 @@
+{% extends 'partials/base.html' %} 
+{% load static %} 
+{%load mathfilters%}
+{% block title %}Edit Account Info{% endblock %}
+
+{% block content %}
+<center>
+<div class='container border-none shadow pt-3' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 20px 0px">
+    <h2 style="padding: 10px 0px 10px 0px;" class="section-heading text-uppercase text-center">
+      Edit Your Information:
+    </h2>
+  <br />
+  <form name="form" method="post" action="{% url 'updateUser' %}">
+    {% csrf_token %}
+
+    <label for="email">Email: </label>
+    <input
+      type="text"
+      id="email"
+      name="email"
+      value="{{ user.email }}"
+      readonly
+    />
+    <br /><br />
+
+    <label for="password">Password: </label>
+    <input
+      type="password"
+      id="password"
+      name="password"
+      value="{{ user.password }}"
+      readonly
+    />
+    <input
+      type="text"
+      id="password"
+      name="password"
+      value="{{ user.password }}"
+      required
+      hidden
+    />
+    <br /><br />
+
+
+    <label for="first_name">First Name: </label>
+    <input
+      type="text"
+      id="first_name"
+      name="first_name"
+      value="{{ user.first_name }}"
+      autofocus
+      required
+    />
+    <br /><br />
+
+    <label for="last_name">Last Name: </label>
+    <input
+      type="text"
+      id="last_name"
+      name="last_name"
+      value="{{ user.last_name }}"
+      required
+    />
+    <br /><br />
+      
+      <label for="birthday">Birthday: </label>
+      <input type="date" id="birthday" name="birthday" value="{{ user.birthday|date:"Y-m-d"}}" required/>
+      <br /><br />
+
+      <label for="height">Height(in): </label>
+      <input type="number" id="height" name="height" value="{{ user.height }}" required/>
+      <br /><br />
+
+      <label for="weight">Weight(lbs): </label>
+      <input type="number" id="weight" name="weight" value="{{ user.weight }}" required/>
+      <br /><br />
+
+      <label for="gender">Gender: </label>
+      <br />
+      <input type="radio" id="male" name="gender" {% if user.gender == 'M'%}checked{% endif %} value="M"  />
+      <label for="male">Male</label><br />
+      <input type="radio" id="female" name="gender" {% if user.gender == 'F'%}checked{% endif %} value="F" />
+      <label for="female">Female</label>
+      <br />
+      
+
+      <label for="date_signed_up"></label>
+      <input
+        type='date'
+        id="date_signed_up"
+        name="date_signed_up"
+        <value="{{ user.date_signed_up }}" 
+        hidden
+      />
+    
+
+    <p>Date Signed up: <br />{{ user.date_signed_up }}</p>
+
+    <label for="on_dialysis">Are You On Dialysis? </label>
+    <br />
+    <input type="radio" id="yes" name="on_dialysis" {% if user.on_dialysis == True %}checked{% endif %} value="True" />
+    <label for="yes">Yes </label>
+    <br />
+    <input type="radio" id="no" name="on_dialysis" {% if user.on_dialysis == False %}checked{% endif %} value="False" />
+    <label for="no">No </label>
+    <br /><br />
+
+    <label for="stage">Kidney Treatment Stage: </label>
+    <select name="stage" id="stage">
+      <option value="1">Stage 1</option>
+      <option value="2">Stage 2</option>
+      <option value="3">Stage 3</option>
+      <option value="4">Stage 4</option>
+      value = "{{ user.stage }}"
+    </select>
+    <br /><br />
+
+    <label for="blood_pressure">Do you have high blood pressure? </label>
+    <br />
+    <input type="radio" id="yes" name="blood_pressure" {% if user.blood_pressure == True %}checked{% endif %} value="True" />
+    <label for="yes">Yes</label><br />
+    <input type="radio" id="no" name="blood_pressure" {% if user.blood_pressure == False %}checked{% endif %} value="False" />
+    <label for="no">No</label>
+    <br /><br />
+
+    <label for="diabetes">Do you have diabetes? </label>
+    <br />
+    <input type="radio" id="yes" name="diabetes" {% if user.diabetes == True %} checked {%endif%} value="True" />
+    <label for="yes">Yes</label><br />
+    <input type="radio" id="no" name="diabetes" {% if user.diabetes == False %} checked {%endif%} value="False" />
+    <label for="no">No</label>
+    <br /><br />
+
+    <button class='btn btn-primary' type="submit">Update</button>
+  </form>
+</div>
+</center>
+{% endblock %}

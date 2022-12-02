@@ -1,0 +1,216 @@
+.divider {
+    border-bottom: 2px solid #eee;
+    width: 100%;
+    height: 1px;
+    margin: 20px 0;
+}
+
+form.searchbar {
+    margin-bottom: 20px;
+}
+
+form.searchbar input#search {
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px;
+    border: 4px solid #eee;
+    outline: none;
+}
+
+form.searchbar input#search:focus {
+    box-shadow: 0 0 5px rgb(125, 190, 92);
+    border: 4px solid rgb(125, 190, 92);
+    
+}
+
+.subtext {
+    font-style: italic;
+    opacity: .6;
+}
+
+#overlay {
+    background-color: rgba(0,0,0,.2);
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+}
+
+#text{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 16px;
+    color: black;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.info {
+    position: relative;
+    left: 10px;
+}
+
+.info .tooltiptext {
+    visibility: hidden;
+    width: fit-content;
+    background-color: rgba(0,0,0,.5);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    transition:ease-in-out;
+    transition: .2s;
+  
+    /* Position the tooltip */
+    position: relative;
+    left: 10px;
+    z-index: 1;
+}
+
+.info .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    top: 40%; /* At the bottom of the tooltip */
+    left: -3.5%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color:  transparent rgba(0,0,0,.5) transparent  transparent  ;
+  }
+
+.info:hover .tooltiptext {
+    visibility: visible;
+}
+
+.item {
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    cursor: pointer;
+}
+
+.item:hover {
+    color:rgb(125, 190, 92);
+}
+
+.popup-form {
+    display: flex;
+    flex-direction: column;
+}
+.popup-form div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px 0;
+}
+.popup-form .buttons {
+    align-self: center;
+}
+.popup-form .buttons * {
+    width: 100px;
+}
+.popup-form a {
+    margin-right: 20px;
+}
+.popup-form #servings {
+    width: 50px;
+}
+
+.popup-form .servings-div {
+    display: flex;
+    align-items: center;
+}
+
+.meal-item {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.diary-content .divider.meal-heading {
+    border-bottom: 4px solid rgba(125, 190, 92, .5);
+}
+.meal-item .trash-container {
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+}
+.meal-item .trash-container:hover {
+    background-color: rgb(255, 228, 233);
+}
+.meal-item .trash {
+    color: white;
+}
+.meal-item:hover .trash {
+    color: var(--bs-danger);
+}
+
+.meal-item p {
+    margin: 0 75px 0 0;
+}
+.meal-container {
+    border: 2px solid #bbb;
+    border-radius: 5px;
+}
+.meal-container .divider {
+    margin: 0;
+}
+
+.none {
+    opacity: .6;
+    margin-left: 10px;
+}
+
+h4:first-child {
+    margin-top: 0;
+}
+h4 {
+    margin-top: 30px;
+}
+
+.date-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px 100px;
+}
+.date-header svg {
+    transform: scale(2);
+}
+.diary-content {
+    padding: 20px 75px;
+}
+.date-arrow {
+    color:rgb(125, 190, 92);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    transition: .2s;
+}
+.date-arrow:hover {
+    color:rgb(125, 190, 92);
+    background-color: rgb(228, 251, 217);
+}
+
+.add-btn svg {
+    transform: scale(2)
+}

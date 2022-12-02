@@ -1,0 +1,48 @@
+{% extends 'partials/base.html' %} 
+{% load static %}
+{% block title %}Edit Levels{% endblock %}
+
+{% block content %}
+<center>
+<div class='container border-none shadow pt-3 text-center' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 10px 0px">
+  <div class="text-center pb-3" style="padding-bottom: 10px">
+    <h2 style="style:padding-left:10px;" class="section-heading text-uppercase">
+      Edit Your Serum Levels:
+    </h2>
+  </div>
+  <br />
+  <form name="form" method="post" action="{% url 'updateLevels' %}">
+    {% csrf_token %}
+
+    <input type="text" name="email" id="email" value="{{user.email}}" hidden>
+
+    <label for = "k_level">K Level:</label>
+    <input type="text" id="k_level" name="k_level" value="{{user.k_level}}" />
+    <br /><br />
+
+    <label for = "na_level">Na Level: </lavel>
+    <input type="text" id="na_level" name="na_level" value="{{user.na_level}}" />
+    <br /><br />
+
+    <label for = "phos_level">Phos Level: </label>
+    <input type="text" id="phos_level" name="phos_level" value="{{user.phos_level}}" />
+    <br /><br />
+
+    <label for = "creatinine_level">Creatinine Level: </label>
+    <input type="text" id="creatinine_level" name="creatinine_level" value="{{user.creatinine_level}}" />
+    <br /><br />
+
+    <label for = "albumin_level">Albumin Level: </label>
+    <input type="text" id="albumin_level" name="albumin_level" value="{{user.albumin_level}}" />
+    <br /><br />
+
+    <label for = "blood_sugar_level">Blood Sugar Level: </label>
+    <input type="text" id="blood_sugar_level" name="blood_sugar_level" value="{{user.blood_sugar_level}}" />
+    <br /><br />
+
+
+    <button class='btn btn-primary mt-3' type="submit">Update</button>
+  </form>
+</div>
+</center>
+{% endblock %}

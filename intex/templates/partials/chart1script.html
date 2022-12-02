@@ -1,0 +1,45 @@
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['K (mg)', 'Na (mg)', 'Phos (mg)'],
+            datasets: [
+            {
+                label: 'Micronutrient Levels',
+
+                data: [{{ todays_k_percent }}, {{ todays_na_percent }}, {{ todays_phos_percent }}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.8)',
+                    'rgba(54, 162, 235, 0.8)',
+                    'rgba(255, 206, 86, 0.8)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1,
+                barPercentage: .75,
+                categoryPercentage: .9
+            },]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                y: {
+                    beginAtZero: true
+                },
+                x: {
+                    min: 0,
+                    max: 100,
+
+                    title: {
+                        display: true,
+                        text: "% of Recommended Daily Intake"
+                    },
+                }
+            }
+        }
+    });
+</script>

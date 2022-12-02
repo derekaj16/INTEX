@@ -1,0 +1,31 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block title %}Account Info{% endblock %}
+{% block additionalCSS %}
+<link rel="newest stylesheet" href="{% static 'css/main.css' %}">
+{% endblock additionalCSS %}
+
+{% block content %}
+
+<center>
+<div class='container border-none shadow pt-3' style="border-radius: 20px; margin: 100px 0px 0px 0px; padding: 10px 0px 10px 0px">
+    <h1 style="padding-bottom: 10px" class='text-center'><b>Nice to Have You.</b></h1>
+    
+    <div class="text-center">
+        <p><b>Email:</b> {{user.email}}</p>
+        <p><b>First Name:</b> {{user.first_name}}</p>
+        <p><b>Last Name:</b> {{user.last_name}}</p>
+        <p><b>Birthday:</b> {{user.birthday}}</p>
+        <p><b>Height:</b> {{user.height}} in</p>
+        <p><b/>Weight:</b> {{user.weight}} lbs</p>
+        <p><b>Gender:</b> {% if user.gender == 'M' %}Male{% else %}Female{% endif %}</p>
+        <p><b>Date Signed Up:</b> {{user.date_signed_up}}</p>
+        <p><b>User on Dialysis?</b> {{user.on_dialysis}}</p>
+        <p><b>Stage:</b> {{user.stage}}</p>
+        <a class='btn btn-primary' href="{% url 'edit' %}">Edit Account Details</a>
+        <br><br>
+        <a class='btn btn-secondary' href="{% url 'logout' %}">Log Out</a>
+    </div>
+</div>
+</center>
+{% endblock %}
