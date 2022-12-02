@@ -1,4 +1,5 @@
 function addFoodPopup(food) {
+  // Display popup and fill values
   document.getElementById('overlay').style.display = 'block';
   document.getElementById('food-name').innerHTML = titleCase(food['description']);
   if (food['servingSize']) {
@@ -17,8 +18,9 @@ function addFoodPopup(food) {
     document.getElementById('serving_size').value = food['servingSize']
     document.getElementById('serving_size_unit').value = food['servingSizeUnit']
   }
+
+  // Obtain nutrient values we want to store
   for (let i = 0; i < food['foodNutrients'].length; i++) {
-    // console.log(food['foodNutrients'][i]['nutrientName'] + ' ' + food['foodNutrients'][i]['value']);
     if (food['foodNutrients'][i]['nutrientName'] === 'Potassium, K') {
       document.getElementById('k_value').value = food['foodNutrients'][i]['value'];
     } 
@@ -69,7 +71,6 @@ function toggleEye(e) {
   else {
     document.getElementById('password').setAttribute('type', 'text');
   }
-// toggle the type attribute
 
-visible = !visible;
+visible = !visible;// toggle the type attribute
 }

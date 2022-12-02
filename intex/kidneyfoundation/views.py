@@ -10,17 +10,16 @@ from decimal import Decimal
 import pytz
 
 
-# feet/inches to centimeters Function
+# Conversion Functions
 def heightToInches(feet, inches) :
     cm = (float(feet) * 12) + float(inches)
     return round(cm, 2)
 
-# Pounds to Kilograms Function
 def lbsToKg(lbs) :
     kg = float(lbs) * 0.453592
     return round(kg, 2)
 
-# Create your views here.
+# Begin Views
 def indexPageView(request, error=False) :
     context = {
         'error' : error,
