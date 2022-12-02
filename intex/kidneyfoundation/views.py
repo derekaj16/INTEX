@@ -76,9 +76,6 @@ def LoginView(request) :
 
                 # store that user's email to session storage
                 request.session['email'] = user.email
-
-                # Then get that email as a variable called email
-                # email = request.session.get('email', 'davemurdock55@gmail.com')
                 
                 # Then go and render the homepage, passing the session variable as the value for the email key in a nameless dictionary
                 return homePageView(request)
@@ -89,41 +86,18 @@ def LoginView(request) :
 
 def LogoutView(request) :
     request.session['email'] = None
-    return render(request, 'kidneyfoundation/home.html')
-
-# def signInPageView(request) :
-
-#     if request.method == 'POST' :
-#         username = request.POST['email']
-#         password = request.post['password']
-
-#         usercred = authenticate(username=username, password=password)
-
-#         if usercred is not None :
-#             # log in the user
-#             login(request, usercred)
-#             # send them to the main page
-#             return render(request, 'kidneyfoundation/index.html')
-
-#         else :
-
-#             messages.error(request, "Sorry, we couldn't sign you in. \n(Bad credentials)")
-#             return redirect('dashboard-index')
-
-#     return render(request, 'kidneyfoundation/signin.html')
-
+    return redirect(homePageView)
 
 def homePageView(request) :
+    data = None
+    logged_in = False
+    email = ''
     if 'email' in request.session :
-        email = request.session['email']
-        data = User.objects.get(email=email)
-        logged_in = loggedIn(request)
-    else :
-        email = ''
-        data = None
-        logged_in = False
-
-
+        if not request.session['email'] == None :
+            email = request.session['email']
+            data = User.objects.get(email=email)
+            logged_in = loggedIn(request)
+        
     context = {
         "user" : data,
         "logged_in" : logged_in
@@ -150,7 +124,7 @@ def dashboardPageView(request) :
     entrydata_all = Entry.objects.select_related('fdcId').filter(email=email)
     
 
-    today = date.today()
+    today = datetime.now(pytz.timezone('US/Mountain')).date()
     a_week_ago = today - timedelta(days=7)
 
     rolling_week_entries = {
@@ -172,34 +146,18 @@ def dashboardPageView(request) :
             # Adding the entry object to the key that corresponds with how many days ago that entry was
             rolling_week_entries[days_ago.days].append(entry)
 
+
     # Creating a list to hold all of the days of the week over the past rolling week
     days_of_week = []
-    currentDate = datetime.now(pytz.timezone('US/Mountain')).date()
     for day in range(0,7) :
-        days_of_week.append(datetime.strftime(currentDate, '%a, %b %d'))
-        currentDate = currentDate - timedelta(days=1)
+        days_of_week.append(datetime.strftime(today, '%a, %b %d'))
+        today = today - timedelta(days=1)
 
     days_of_week.reverse()
-
-
-    # For each day (key) in the rolling_week_entries table
-    # for day_number in rolling_week_entries:
-    #     # get the number of days before the current day
-    #     if len(rolling_week_entries[day_number]) > 0 :
-    #         entry_day_of_week_date = rolling_week_entries[day_number][0].date
-
-    #     # get the day of the week of the entries of the day ago thing
-    #         day_of_week_name = str(entry_day_of_week_date.strftime('%A'))
-
-    #     # appending that day of the week name to the list holding all of the names of the days of the week from the past rolling week
-    #         days_of_week.append(day_of_week_name)
 
     k_data = []
     na_data = []
     phos_data = []
-
-    
-
 
     # for each day in the rolling_week_entries dictionary
     for day in rolling_week_entries :
@@ -210,6 +168,7 @@ def dashboardPageView(request) :
         
         if len(rolling_week_entries[day]) > 0 :
             for entry in rolling_week_entries[day] :
+                print('Day: ' + str(day) + '   ' + str(entry.date))
                 # getting the intake for each nutrient by mutliplying the nutrient's value for the food in the entry by the number of servings
                 entryK_intake = int(entry.fdcId.k_value * entry.num_servings)
                 entryNa_intake = int(entry.fdcId.na_value * entry.num_servings)
@@ -473,7 +432,6 @@ def updateUserInfoView(request) :
         user.height = request.POST[ 'height' ]
         user.weight = request.POST[ 'weight' ]
         user.gender = request.POST[ 'gender' ]
-        # user.date_signed_up = request.POST[ 'date_signed_up' ]
         user.on_dialysis = request.POST[ 'on_dialysis' ]
         user.stage = request.POST[ 'stage' ]
         user.blood_pressure = request.POST[ 'blood_pressure' ]
