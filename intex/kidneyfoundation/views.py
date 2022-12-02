@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login
 from kidneyfoundation.models import * # need to make model for this
 from datetime import datetime, timedelta, date
 from decimal import Decimal
+import pytz
 
 
 # feet/inches to centimeters Function
@@ -295,7 +296,7 @@ def loggedIn(request) :
     
     return logged_in
 
-def diaryPageView(request, data=None, status=0, date=date.today()) :
+def diaryPageView(request, data=None, status=0, date=datetime.now(pytz.timezone('US/Mountain')).date()) :
     name = User.objects.get(email=request.session['email']).first_name
     context = {
         'name' : name,
