@@ -82,46 +82,7 @@
                         &#9888; Your Creatinine levels are low.
                     </div>
                 {% endif %}
-            {% endif %}
-        {% endif %}
-        {% comment %} This is for men with dialysis {% endcomment %}
-        {% if user.gender == 'M'%}
-            {% if user.on_dialysis == True %} 
-                {% if user.creatinine_level < 1.3 %} 
-                    <div class="box warn">
-                        &#9888; Your Creatinine levels are low.
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-        {% comment %} This is for normal men {% endcomment %}
-        {% if user.gender == 'M' %}
-            {% if user.creatinine_level < 0.7 %}
-                <div class="box warn">
-                    &#9888; Your Creatinine levels are low.
-                </div>
-            {% endif %}
-        {% endif %}
-        {% if user.gender == 'M' %} 
-            {% if user.creatinine_level > 1.3 %}
-                <div class="box warn">
-                    &#9888; Your Creatinine levels are high.
-                </div>
-            {% endif %}
-        {% endif %}
-        {% comment %} This is for women with stage 3/4 {% endcomment %}
-        {% if user.gender == 'F'%} 
-            {% if user.stage == 3 or user.stage == 4 %}
-                {% if user.creatinine_level < 1.1 %}
-                    <div class="box warn">
-                        &#9888; Your Creatinine levels are low.
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endif %}
-        {% comment %} This is for women with dialysis {% endcomment %}
-        {% if user.gender == 'F' %} 
-            {% if user.on_dialysis == True %}
+            {% elif user.on_dialysis == True  %}
                 {% if user.creatinine_level < 1.3 %}
                     <div class="box warn">
                         &#9888; Your Creatinine levels are low.
@@ -129,8 +90,94 @@
                 {% endif %}
             {% endif %}
         {% endif %}
+        {% comment %} This is for men with dialysis {% endcomment %}
+        {% comment %} {% if user.gender == 'M'%}
+            {% if user.on_dialysis == True %} 
+                {% if user.creatinine_level < 1.3 %} 
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %} {% endcomment %}
+        {% comment %} This is for normal men {% endcomment %}
+        {% if user.gender == 'M' and user.on_dialysis == False%}
+            {% if user.stage == 1 or user.stage == 2 %}
+                {% if user.creatinine_level < 0.7 %}
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% elif user.creatinine_level > 1.3 %}
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are high.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% comment %} {% if user.gender == 'M' %} 
+            {% if user.creatinine_level > 1.3 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are high.
+                </div>
+            {% endif %}
+        {% endif %} {% endcomment %}
+
+
+        {% comment %} This is for women with stage 3/4 {% endcomment %}
+    {% if user.gender == 'F' %}
+        {% if user.stage == 3 or user.stage == 4 %} 
+            {% if user.creatinine_level < 1.1 %} 
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are low.
+                </div>
+            {% endif %}
+        {% elif user.on_dialysis == True  %}
+            {% if user.creatinine_level < 1.3 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are low.
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+
+    {% if user.gender == 'F' and user.on_dialysis == False%}
+        {% if user.stage == 1 or user.stage == 2 %}
+            {% if user.creatinine_level < 0.6 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are low.
+                </div>
+            {% elif user.creatinine_level > 1.1 %}
+                <div class="box warn">
+                    &#9888; Your Creatinine levels are high.
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+
+        {% comment %} {% if user.gender == 'F'%} 
+            {% if user.stage == 3 or user.stage == 4 %}
+                {% if user.creatinine_level < 1.1 %}
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %} {% endcomment %}
+
+        {% comment %} This is for women with dialysis {% endcomment %}
+        {% comment %} {% if user.gender == 'F' %} 
+            {% if user.on_dialysis == True %}
+                {% if user.creatinine_level < 1.3 %}
+                    <div class="box warn">
+                        &#9888; Your Creatinine levels are low.
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %} {% endcomment %}
+
         {% comment %} This is for normal females {% endcomment %}
-        {% if user.gender == 'F' %} 
+        {% comment %} {% if user.gender == 'F' %} 
             {% if user.creatinine_level < 0.6 %}
                 <div class="box warn">
                     &#9888; Your Creatinine levels are low.
@@ -143,7 +190,7 @@
                     &#9888; Your Creatinine levels are high.
                 </div>
             {% endif %}
-        {% endif %}
+        {% endif %} {% endcomment %}
 
         <p><b>Albumin Level:</b> {{user.albumin_level}}</p>
         {% if user.albumin_level < 3.5 %}
