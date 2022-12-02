@@ -120,10 +120,6 @@ class Condition(models.Model) :
     def __str__(self) :
         return self.comId
 
-
-
-
-
     entry = models.ManyToManyField(Food, through='Entry')
 
 class Entry(models.Model) :
